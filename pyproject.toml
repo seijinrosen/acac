@@ -11,6 +11,7 @@ documentation = "https://github.com/seijinrosen/acac"
 
 [tool.poetry.dependencies]
 python = "^3.7"
+rich = "^12.5.1"
 
 [tool.poetry.dev-dependencies]
 bandit = "^1.7.4"
