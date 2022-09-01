@@ -70,9 +70,9 @@ def test_with_no_args(
     mock_core_main: MagicMock,
 ):
     assert cli.main([]) is None
-    assert mock_print_help_message.call_count == 0
+    assert mock_print_help_message.call_count == 1
     assert mock_print_version.call_count == 0
-    mock_core_main.assert_called_once_with([])
+    assert mock_core_main.call_count == 0
 
 
 def test_print_help_message(capsys: CaptureFixture[str]):

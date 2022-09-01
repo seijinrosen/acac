@@ -34,7 +34,7 @@ def print_version() -> None:
 
 
 def main(args: list[str]) -> None:
-    if includes(args, {"-h", "--help"}):
+    if not args or includes(args, {"-h", "--help"}):
         print_help_message()
         return
 
