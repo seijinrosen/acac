@@ -360,7 +360,7 @@ pbr = ">=2.0.0,<2.1.0 || >2.1.0"
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -395,7 +395,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "e221a5b6e308f52ff4ac7f4de95cc68a300a5896ca91490f32c214041576eb2a"
+content-hash = "2f8f124a546f600c87c008dcc567339eb00abd0dc355a570c32c01570d2e2067"
 
 [metadata.files]
 atomicwrites = [
