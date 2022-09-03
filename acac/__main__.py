@@ -1,6 +1,6 @@
 import sys
 
-from . import cli
+from acac import cli
 
 
 def main() -> None:

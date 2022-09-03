@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import platform
 import shutil
+import sys
 
-from . import __version__, core
-from .util import console, includes
+from acac import __version__, core
+from acac.util import console, includes
 
 HELP_MESSAGE = """\
 競プロ便利ツール。
@@ -28,9 +29,13 @@ def print_help_message() -> None:
 
 
 def print_version() -> None:
-    print("acac:", __version__)
-    print("Python:", platform.python_version())
-    print("which:", shutil.which("acac"))
+    print("acac:           ", __version__)
+    print("Python:         ", platform.python_version())
+    print("which:          ", shutil.which("acac"))
+    print("__file__:       ", __file__)
+    print("sys.executable: ", sys.executable)
+    print("sys.prefix:     ", sys.prefix)
+    print("sys.exec_prefix:", sys.exec_prefix)
 
 
 def main(args: list[str]) -> None:
@@ -40,6 +45,9 @@ def main(args: list[str]) -> None:
 
     if includes(args, {"-V", "--version"}):
         print_version()
+        return
+
+    if args[0] == "init":
         return
 
     core.main(args)
