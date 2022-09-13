@@ -39,7 +39,7 @@ def run_with_log(
 
 # tomli
 def dump_to_toml(obj: BaseModel, toml_path: Path) -> None:
-    toml_path.write_text(tomli_w.dumps(json.loads(obj.json())), encoding="utf-8")
+    toml_path.write_text(tomli_w.dumps(json.loads(obj.json())), encoding=UTF_8)
 
 
 # requests

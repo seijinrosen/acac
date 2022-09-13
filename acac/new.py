@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 from acac import algo_method, atcoder, config
 from acac.share import Folder, ProblemType
-from acac.util import console, dump_to_toml, get_soup, get_title, request_bytes
+from acac.util import UTF_8, console, dump_to_toml, get_soup, get_title, request_bytes
 
 
 class Metadata(BaseModel):
@@ -63,4 +63,4 @@ def dump_samples(samples: list[str], io_dir: Path) -> None:
         if sample_str == "":
             file.touch()
         else:
-            file.write_text(sample_str + "\n", encoding="utf-8")
+            file.write_text(sample_str + "\n", encoding=UTF_8)

@@ -9,7 +9,7 @@ from rich.table import Table
 
 from acac import config
 from acac.share import Folder
-from acac.util import console, run_with_log
+from acac.util import UTF_8, console, run_with_log
 
 
 class IOSample(BaseModel):
@@ -51,7 +51,11 @@ def get_lang_command(command: str) -> str | Path:
 
 def load_io_samples(i_dir: Path, o_dir: Path) -> list[IOSample]:
     return [
-        IOSample(name=i_file.stem, in_=i_file.read_text(), out=o_file.read_text())
+        IOSample(
+            name=i_file.stem,
+            in_=i_file.read_text(encoding=UTF_8),
+            out=o_file.read_text(encoding=UTF_8),
+        )
         for i_file, o_file in zip(sorted(i_dir.iterdir()), sorted(o_dir.iterdir()))
     ]
 
