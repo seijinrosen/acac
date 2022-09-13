@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "acac"
 version = "0.1.0"
-description = "競プロ便利ツール。AtCoder と アルゴ式に対応"
+description = "競プロ便利ツール。AtCoder と アルゴ式 に対応。"
 authors = ["seijinrosen <86702775+seijinrosen@users.noreply.github.com>"]
 license = "MIT"
 readme = "README.md"
