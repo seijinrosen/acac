@@ -1,16 +1,14 @@
 from __future__ import annotations
 
+import shutil
 import subprocess
 from pathlib import Path
-from shutil import copy
 
 from pydantic import BaseModel
 
 from acac import algo_method, atcoder, config
 from acac.share import Folder, ProblemType
 from acac.util import console, dump_to_toml, get_soup, get_title, request_bytes
-
-TEMPLATES_DIR = Path("templates")
 
 
 class Metadata(BaseModel):
@@ -22,10 +20,10 @@ def main(url: str, folder: Folder, problem_type: ProblemType) -> None:
     folder.path.mkdir(parents=True, exist_ok=True)
 
     if not folder.exec_file.exists():
-        copy(TEMPLATES_DIR / folder.exec_file.name, folder.path)
+        shutil.copy(config.templates_dir / folder.exec_file.name, folder.path)
         console.print(
             "[bold]Copied:",
-            TEMPLATES_DIR / folder.exec_file.name,
+            config.templates_dir / folder.exec_file.name,
             "->",
             folder.exec_file,
         )

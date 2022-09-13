@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup, ResultSet, Tag
 from pydantic import BaseModel
 from rich.console import Console
 
+UTF_8 = "utf-8"
 console = Console()
 
 
