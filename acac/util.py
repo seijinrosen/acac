@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 import requests
@@ -14,6 +15,25 @@ console = Console()
 
 def includes(args: list[str], flags: set[str]) -> bool:
     return any(s in args for s in flags)
+
+
+# subprocess
+def run_with_log(
+    cmd_args: list[str | Path],
+    capture_output: bool = False,
+    check: bool = False,
+    input: str | None = None,
+    text: bool = False,
+) -> tuple[str, str]:
+    console.print("[bold]Running:", *cmd_args)
+    cp = subprocess.run(
+        args=cmd_args,
+        capture_output=capture_output,
+        check=check,
+        input=input,
+        text=text,
+    )
+    return cp.stdout, cp.stderr
 
 
 # tomli
