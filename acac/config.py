@@ -6,7 +6,7 @@ from typing import Dict
 import tomli
 from pydantic import BaseModel
 
-from acac.util import UTF_8, console
+from acac.util import UTF_8, confirm_yN, console
 
 ACAC_TOML = Path("acac.toml")
 DEFAULT_ACAC_TOML = Path(__file__).parent / "default_acac.toml"
@@ -34,8 +34,7 @@ class Config(BaseModel):
 def load_config() -> Config:
     if not ACAC_TOML.exists():
         console.print("このディレクトリ内に acac.toml が見つかりませんでした。")
-        y_or_n = input("作成しますか？ (y/N): ")
-        if y_or_n == "y":
+        if confirm_yN("acac.toml を作成しますか？"):
             shutil.copy(DEFAULT_ACAC_TOML, ACAC_TOML)
             console.print("Created:", ACAC_TOML, "\n")
         else:

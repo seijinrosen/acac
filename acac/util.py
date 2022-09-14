@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 import requests
 import tomli_w
 from bs4 import BeautifulSoup, ResultSet, Tag
 from pydantic import BaseModel
+from readchar import key, readchar
 from rich.console import Console
 
 UTF_8 = "utf-8"
@@ -70,3 +72,17 @@ def get_tags(soup: BeautifulSoup, tag_name: str) -> ResultSet[Tag]:
 def get_next_tag_text(tag: Tag, next_tag_name: str) -> str:
     next_tag = tag.find_next(next_tag_name)
     return next_tag.text.strip() if next_tag else ""
+
+
+# readchar
+def confirm_yN(prompt: str) -> bool:
+    console.print("[green]?", prompt, "(y/N): ", end="", style="bold")
+    try:
+        c = readchar()
+        if c == key.CTRL_D:
+            raise EOFError
+    except (KeyboardInterrupt, EOFError):
+        sys.exit("\nBye.")
+    is_y = c == "y"
+    console.print("Yes" if is_y else "No")
+    return is_y
