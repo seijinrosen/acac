@@ -1,15 +1,17 @@
 from __future__ import annotations
 
 import time
+import webbrowser
 from pathlib import Path
 
 from pydantic import BaseModel
 from rich.markup import escape
 from rich.table import Table
 
+from acac import algo_method, atcoder
 from acac.config import Config
-from acac.share import Folder
-from acac.util import UTF_8, console, run_with_log
+from acac.share import Folder, ProblemType
+from acac.util import UTF_8, confirm_yN, console, run_with_log
 
 
 class IOSample(BaseModel):
@@ -28,7 +30,9 @@ class Result(BaseModel):
     execution_ms: int
 
 
-def main(folder: Folder, lang: str, config: Config) -> None:
+def main(
+    url: str, folder: Folder, problem_type: ProblemType, lang: str, config: Config
+) -> None:
     lang_command = get_lang_command(config.lang[lang].command)
     run_with_log([lang_command, "--version"], check=True)
     io_samples = load_io_samples(folder.in_, folder.out)
@@ -41,6 +45,14 @@ def main(folder: Folder, lang: str, config: Config) -> None:
         results = get_results([lang_command, folder.exec_file], io_samples)
 
     console.print(create_table(results))
+
+    if all(r.is_accepted for r in results):
+        console.print("All Completed! AC!!!:thumbs_up:", style="green")
+        if problem_type in {"algo_method", "atcoder"} and confirm_yN("他の人の提出を確認しますか？"):
+            webbrowser.open(get_ac_url(problem_type, url, lang))
+    else:
+        console.print("WA...:", end=" ", style="red")
+        console.print(*[r.name for r in results if not r.is_accepted])
 
 
 def get_lang_command(command: str) -> str | Path:
@@ -96,3 +108,11 @@ def create_table(results: list[Result]) -> Table:
             str(r.execution_ms),
         )
     return table
+
+
+def get_ac_url(problem_type: ProblemType, url: str, lang: str) -> str:
+    if problem_type == "algo_method":
+        return algo_method.get_ac_url(url, lang)
+    if problem_type == "atcoder":
+        return atcoder.get_ac_url(url, lang)
+    return ""

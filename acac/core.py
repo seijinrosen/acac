@@ -16,7 +16,7 @@ def main(args: list[str], config: Config) -> None:
     folder = get_folder(url, config.lang[lang].file_name)
 
     if includes(args, {"-j", "--judge"}):
-        judge.main(folder, lang, config)
+        judge.main(url, folder, problem_type, lang, config)
     else:
         create.main(url, folder, problem_type, config)
 
