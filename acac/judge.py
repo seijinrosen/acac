@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 import time
 import webbrowser
 from pathlib import Path
@@ -83,16 +84,17 @@ def load_io_samples(i_dir: Path, o_dir: Path) -> list[IOSample]:
 def get_results(cmd_args: list[str | Path], io_samples: list[IOSample]) -> list[Result]:
     def get_result(io_sample: IOSample) -> Result:
         start = time.time()
-        stdout, stderr = run_with_log(
+        console.print(f"[bold]Running {io_sample.name}:", *cmd_args)
+        cp = subprocess.run(
             cmd_args, capture_output=True, input=io_sample.in_, text=True
         )
         return Result(
             name=io_sample.name,
             input=io_sample.in_,
             expected=io_sample.out,
-            actual=stdout,
-            error=stderr,
-            is_accepted=io_sample.out == stdout,
+            actual=cp.stdout,
+            error=cp.stderr,
+            is_accepted=io_sample.out == cp.stdout,
             execution_ms=int((time.time() - start) * 1000),
         )
 
