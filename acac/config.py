@@ -18,6 +18,10 @@ class Create(BaseModel):
     clipboard_message: str
 
 
+class Judge(BaseModel):
+    clipboard_message: str
+
+
 class LangSetting(BaseModel):
     command: str
     file_name: str
@@ -28,6 +32,7 @@ class Config(BaseModel):
     editor_command: str
     templates_dir: Path
     create: Create
+    judge: Judge
     lang: Dict[str, LangSetting]
 
 

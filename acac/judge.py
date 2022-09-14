@@ -4,6 +4,7 @@ import time
 import webbrowser
 from pathlib import Path
 
+import pyperclip
 from pydantic import BaseModel
 from rich.markup import escape
 from rich.table import Table
@@ -48,6 +49,13 @@ def main(
 
     if all(r.is_accepted for r in results):
         console.print("All Completed! AC!!!:thumbs_up:", style="green")
+        if config.judge.clipboard_message:
+            clipboard_message = config.create.clipboard_message.replace(
+                "${url}", url
+            ).replace("${lang}", lang)
+            pyperclip.copy(clipboard_message)  # type: ignore
+            console.print("以下の文字列がクリップボードにコピーされました。")
+            console.print(clipboard_message)
         if problem_type in {"algo_method", "atcoder"} and confirm_yN("他の人の提出を確認しますか？"):
             webbrowser.open(get_ac_url(problem_type, url, lang))
     else:
