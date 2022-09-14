@@ -12,6 +12,10 @@ ACAC_TOML = Path("acac.toml")
 DEFAULT_ACAC_TOML = Path(__file__).parent / "default_acac.toml"
 
 
+class Editor(BaseModel):
+    command: str
+
+
 class Create(BaseModel):
     auto_editor_open: bool
     auto_git_add: bool
@@ -29,8 +33,8 @@ class LangSetting(BaseModel):
 
 class Config(BaseModel):
     default_lang: str
-    editor_command: str
     templates_dir: Path
+    editor: Editor
     create: Create
     judge: Judge
     lang: Dict[str, LangSetting]

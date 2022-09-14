@@ -62,7 +62,7 @@ def main(url: str, folder: Folder, problem_type: ProblemType, config: Config) ->
         )
 
     if config.create.auto_editor_open:
-        run_with_log([config.editor_command, ".", folder.exec_file], check=True)
+        run_with_log([config.editor.command, ".", folder.exec_file], check=True)
 
     if config.create.clipboard_message:
         clipboard_message = config.create.clipboard_message.replace("${url}", url)

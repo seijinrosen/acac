@@ -1,6 +1,8 @@
 default_lang = "pypy3"
-editor_command = "code"
 templates_dir = "templates"
+
+[editor]
+command = "code"
 
 [create]
 auto_editor_open = true
