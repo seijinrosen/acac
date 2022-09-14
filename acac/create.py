@@ -54,10 +54,11 @@ def main(url: str, folder: Folder, problem_type: ProblemType) -> None:
     if config.create.auto_editor_open:
         subprocess.run([config.editor_command, ".", folder.exec_file], check=True)
 
-    commit_message = "Create: " + url
-    pyperclip.copy(commit_message)  # type: ignore
-    console.print("以下の文字列がクリップボードにコピーされました。")
-    console.print(commit_message)
+    if config.create.clipboard_message:
+        clipboard_message = config.create.clipboard_message.replace("${url}", url)
+        pyperclip.copy(clipboard_message)  # type: ignore
+        console.print("以下の文字列がクリップボードにコピーされました。")
+        console.print(clipboard_message)
 
 
 def dump_samples(samples: list[str], io_dir: Path) -> None:

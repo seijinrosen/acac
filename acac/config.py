@@ -16,6 +16,7 @@ templates_dir = "templates"
 [create]
 auto_editor_open = true
 auto_git_add = false
+clipboard_message = "Create: ${url}"
 
 [lang.cpp]
 command = "g++"
@@ -38,6 +39,7 @@ file_name = "main.ts"
 class Create(BaseModel):
     auto_editor_open: bool
     auto_git_add: bool
+    clipboard_message: str
 
 
 class LangSetting(BaseModel):
