@@ -16,4 +16,4 @@ init:
 	direnv allow
 
 editable-install:
-	/usr/local/bin/python3.9 -m pip install --editable .
+	/usr/local/bin/python3.7 -m pip install --editable .
