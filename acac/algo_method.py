@@ -27,3 +27,14 @@ def extract_script_body(soup: BeautifulSoup) -> str:
     script_text = script_tag.text if script_tag else ""
     script_json = json.loads(script_text)
     return script_json["props"]["pageProps"]["tasks"]["body"]
+
+
+def get_ac_url(url: str, lang: str) -> str:
+    d = {"cpp": 1, "pypy3": 16, "python3": 2, "ts": 11}
+    return (
+        f"{url}/submissions?id={get_task_id(url)}&language={d[lang]}&status=AC&page=0"
+    )
+
+
+def get_task_id(url: str) -> str:
+    return url.split("/")[-1]

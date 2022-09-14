@@ -27,3 +27,16 @@ def compose_get_samples(soup: BeautifulSoup) -> Callable[[IorO], list[str]]:
         ]
 
     return partial(gs, soup, "h3", "pre", get_next_tag_text)
+
+
+def get_ac_url(url: str, lang: str) -> str:
+    d = {"cpp": "C%2B%2B", "pypy3": "Python3", "python3": "Python3", "ts": "TypeScript"}
+    return f"{BASE_URL}{get_contest_name(url)}/submissions?f.Task={get_task_name(url)}&f.LanguageName={d[lang]}&f.Status=AC&f.User="
+
+
+def get_contest_name(url: str) -> str:
+    return url.split("/")[4]
+
+
+def get_task_name(url: str) -> str:
+    return url.split("/")[-1]

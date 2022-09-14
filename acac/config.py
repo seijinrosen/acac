@@ -1,13 +1,29 @@
+import shutil
+import sys
 from pathlib import Path
 from typing import Dict
 
 import tomli
 from pydantic import BaseModel
 
+from acac.util import UTF_8, confirm_yN, console
 
-class New(BaseModel):
+ACAC_TOML = Path("acac.toml")
+DEFAULT_ACAC_TOML = Path(__file__).parent / "default_acac.toml"
+
+
+class Editor(BaseModel):
+    command: str
+
+
+class Create(BaseModel):
     auto_editor_open: bool
     auto_git_add: bool
+    clipboard_message: str
+
+
+class Judge(BaseModel):
+    clipboard_message: str
 
 
 class LangSetting(BaseModel):
@@ -17,14 +33,20 @@ class LangSetting(BaseModel):
 
 class Config(BaseModel):
     default_lang: str
-    editor_command: str
-    new: New
+    templates_dir: Path
+    editor: Editor
+    create: Create
+    judge: Judge
     lang: Dict[str, LangSetting]
 
 
-_config = Config(**tomli.loads(Path("acac.toml").read_text()))
+def load_config() -> Config:
+    if not ACAC_TOML.exists():
+        console.print("このディレクトリ内に acac.toml が見つかりませんでした。")
+        if confirm_yN("acac.toml を作成しますか？"):
+            shutil.copy(DEFAULT_ACAC_TOML, ACAC_TOML)
+            console.print("Created:", ACAC_TOML, "\n")
+        else:
+            sys.exit("Bye.")
 
-default_lang = _config.default_lang
-editor_command = _config.editor_command
-new = _config.new
-lang_settings = _config.lang
+    return Config(**tomli.loads(ACAC_TOML.read_text(encoding=UTF_8)))

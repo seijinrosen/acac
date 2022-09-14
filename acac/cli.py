@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import platform
-import shutil
-import sys
+from pathlib import Path
 
 from acac import __version__, core
+from acac.config import load_config
 from acac.util import console, includes
 
 HELP_MESSAGE = """\
@@ -29,13 +29,9 @@ def print_help_message() -> None:
 
 
 def print_version() -> None:
-    print("acac:           ", __version__)
-    print("Python:         ", platform.python_version())
-    print("which:          ", shutil.which("acac"))
-    print("__file__:       ", __file__)
-    print("sys.executable: ", sys.executable)
-    print("sys.prefix:     ", sys.prefix)
-    print("sys.exec_prefix:", sys.exec_prefix)
+    console.print("acac:  ", __version__)
+    console.print("Python:", platform.python_version())
+    console.print("from:  ", Path(__file__).parent)
 
 
 def main(args: list[str]) -> None:
@@ -50,4 +46,4 @@ def main(args: list[str]) -> None:
     if args[0] == "init":
         return
 
-    core.main(args)
+    core.main(args, load_config())

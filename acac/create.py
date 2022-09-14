@@ -1,16 +1,23 @@
 from __future__ import annotations
 
-import subprocess
+import shutil
 from pathlib import Path
-from shutil import copy
 
+import pyperclip
 from pydantic import BaseModel
 
-from acac import algo_method, atcoder, config
+from acac import algo_method, atcoder
+from acac.config import Config
 from acac.share import Folder, ProblemType
-from acac.util import console, dump_to_toml, get_soup, get_title, request_bytes
-
-TEMPLATES_DIR = Path("templates")
+from acac.util import (
+    UTF_8,
+    console,
+    dump_to_toml,
+    get_soup,
+    get_title,
+    request_bytes,
+    run_with_log,
+)
 
 
 class Metadata(BaseModel):
@@ -18,14 +25,14 @@ class Metadata(BaseModel):
     url: str
 
 
-def main(url: str, folder: Folder, problem_type: ProblemType) -> None:
+def main(url: str, folder: Folder, problem_type: ProblemType, config: Config) -> None:
     folder.path.mkdir(parents=True, exist_ok=True)
 
     if not folder.exec_file.exists():
-        copy(TEMPLATES_DIR / folder.exec_file.name, folder.path)
+        shutil.copy(config.templates_dir / folder.exec_file.name, folder.path)
         console.print(
             "[bold]Copied:",
-            TEMPLATES_DIR / folder.exec_file.name,
+            config.templates_dir / folder.exec_file.name,
             "->",
             folder.exec_file,
         )
@@ -47,13 +54,21 @@ def main(url: str, folder: Folder, problem_type: ProblemType) -> None:
         dump_samples(get_samples("入"), folder.in_)
         dump_samples(get_samples("出"), folder.out)
 
-    if config.new.auto_git_add:
-        subprocess.run(
+    console.print("[bold]Created in:", folder.path)
+
+    if config.create.auto_git_add:
+        run_with_log(
             ["git", "add", folder.in_, folder.out, folder.metadata_toml], check=True
         )
 
-    if config.new.auto_editor_open:
-        subprocess.run([config.editor_command, ".", folder.exec_file], check=True)
+    if config.create.auto_editor_open:
+        run_with_log([config.editor.command, ".", folder.exec_file], check=True)
+
+    if config.create.clipboard_message:
+        clipboard_message = config.create.clipboard_message.replace("${url}", url)
+        pyperclip.copy(clipboard_message)  # type: ignore
+        console.print("以下の文字列がクリップボードにコピーされました。")
+        console.print(clipboard_message)
 
 
 def dump_samples(samples: list[str], io_dir: Path) -> None:
@@ -65,4 +80,4 @@ def dump_samples(samples: list[str], io_dir: Path) -> None:
         if sample_str == "":
             file.touch()
         else:
-            file.write_text(sample_str + "\n", encoding="utf-8")
+            file.write_text(sample_str + "\n", encoding=UTF_8)

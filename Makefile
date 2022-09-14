@@ -14,3 +14,6 @@ init:
 	python3.7 -m venv .venv/
 	poetry install
 	direnv allow
+
+editable-install:
+	/usr/local/bin/python3.7 -m pip install --editable .

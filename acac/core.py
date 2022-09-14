@@ -3,21 +3,22 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from acac import algo_method, atcoder, config, judge, new
+from acac import algo_method, atcoder, create, judge
+from acac.config import Config
 from acac.share import Folder, ProblemType
 from acac.util import includes
 
 
-def main(args: list[str]) -> None:
+def main(args: list[str], config: Config) -> None:
     url = args[0]
     problem_type = get_problem_type(url)
     lang = get_lang(args, config.default_lang)
-    folder = get_folder(url, config.lang_settings[lang].file_name)
+    folder = get_folder(url, config.lang[lang].file_name)
 
     if includes(args, {"-j", "--judge"}):
-        judge.main(folder, lang)
+        judge.main(url, folder, problem_type, lang, config)
     else:
-        new.main(url, folder, problem_type)
+        create.main(url, folder, problem_type, config)
 
 
 def get_problem_type(url: str) -> ProblemType:
@@ -29,7 +30,7 @@ def get_problem_type(url: str) -> ProblemType:
 
 
 def get_lang(args: list[str], default_lang: str) -> str:
-    for x in args:
+    for x in args[::-1]:
         if x.startswith(("-l=", "--lang=", "lang=")):
             return x.split("=")[1]
     return default_lang

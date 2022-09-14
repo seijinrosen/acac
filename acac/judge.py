@@ -1,15 +1,19 @@
 from __future__ import annotations
 
+import subprocess
 import time
+import webbrowser
 from pathlib import Path
 
+import pyperclip
 from pydantic import BaseModel
 from rich.markup import escape
 from rich.table import Table
 
-from acac import config
-from acac.share import Folder
-from acac.util import console, run_with_log
+from acac import algo_method, atcoder
+from acac.config import Config
+from acac.share import Folder, ProblemType
+from acac.util import UTF_8, confirm_yN, console, run_with_log
 
 
 class IOSample(BaseModel):
@@ -28,8 +32,10 @@ class Result(BaseModel):
     execution_ms: int
 
 
-def main(folder: Folder, lang: str) -> None:
-    lang_command = get_lang_command(config.lang_settings[lang].command)
+def main(
+    url: str, folder: Folder, problem_type: ProblemType, lang: str, config: Config
+) -> None:
+    lang_command = get_lang_command(config.lang[lang].command)
     run_with_log([lang_command, "--version"], check=True)
     io_samples = load_io_samples(folder.in_, folder.out)
 
@@ -42,6 +48,21 @@ def main(folder: Folder, lang: str) -> None:
 
     console.print(create_table(results))
 
+    if all(r.is_accepted for r in results):
+        console.print("All Completed! AC!!!:thumbs_up:", style="green")
+        if config.judge.clipboard_message:
+            clipboard_message = config.judge.clipboard_message.replace(
+                "${url}", url
+            ).replace("${lang}", lang)
+            pyperclip.copy(clipboard_message)  # type: ignore
+            console.print("以下の文字列がクリップボードにコピーされました。")
+            console.print(clipboard_message)
+        if problem_type in {"algo_method", "atcoder"} and confirm_yN("他の人の提出を確認しますか？"):
+            webbrowser.open(get_ac_url(problem_type, url, lang))
+    else:
+        console.print("WA...:", end=" ", style="red")
+        console.print(*[r.name for r in results if not r.is_accepted])
+
 
 def get_lang_command(command: str) -> str | Path:
     if command.startswith("~"):
@@ -51,7 +72,11 @@ def get_lang_command(command: str) -> str | Path:
 
 def load_io_samples(i_dir: Path, o_dir: Path) -> list[IOSample]:
     return [
-        IOSample(name=i_file.stem, in_=i_file.read_text(), out=o_file.read_text())
+        IOSample(
+            name=i_file.stem,
+            in_=i_file.read_text(encoding=UTF_8),
+            out=o_file.read_text(encoding=UTF_8),
+        )
         for i_file, o_file in zip(sorted(i_dir.iterdir()), sorted(o_dir.iterdir()))
     ]
 
@@ -59,16 +84,17 @@ def load_io_samples(i_dir: Path, o_dir: Path) -> list[IOSample]:
 def get_results(cmd_args: list[str | Path], io_samples: list[IOSample]) -> list[Result]:
     def get_result(io_sample: IOSample) -> Result:
         start = time.time()
-        stdout, stderr = run_with_log(
+        console.print(f"[bold]Running {io_sample.name}:", *cmd_args)
+        cp = subprocess.run(
             cmd_args, capture_output=True, input=io_sample.in_, text=True
         )
         return Result(
             name=io_sample.name,
             input=io_sample.in_,
             expected=io_sample.out,
-            actual=stdout,
-            error=stderr,
-            is_accepted=io_sample.out == stdout,
+            actual=cp.stdout,
+            error=cp.stderr,
+            is_accepted=io_sample.out == cp.stdout,
             execution_ms=int((time.time() - start) * 1000),
         )
 
@@ -92,3 +118,11 @@ def create_table(results: list[Result]) -> Table:
             str(r.execution_ms),
         )
     return table
+
+
+def get_ac_url(problem_type: ProblemType, url: str, lang: str) -> str:
+    if problem_type == "algo_method":
+        return algo_method.get_ac_url(url, lang)
+    if problem_type == "atcoder":
+        return atcoder.get_ac_url(url, lang)
+    return ""
