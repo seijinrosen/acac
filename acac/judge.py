@@ -50,7 +50,7 @@ def main(
     if all(r.is_accepted for r in results):
         console.print("All Completed! AC!!!:thumbs_up:", style="green")
         if config.judge.clipboard_message:
-            clipboard_message = config.create.clipboard_message.replace(
+            clipboard_message = config.judge.clipboard_message.replace(
                 "${url}", url
             ).replace("${lang}", lang)
             pyperclip.copy(clipboard_message)  # type: ignore
