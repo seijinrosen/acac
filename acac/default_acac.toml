@@ -1,0 +1,24 @@
+default_lang = "pypy3"
+editor_command = "code"
+templates_dir = "templates"
+
+[create]
+auto_editor_open = true
+auto_git_add = false
+clipboard_message = "Create: ${url}"
+
+[lang.cpp]
+command = "g++"
+file_name = "main.cpp"
+
+[lang.pypy3]
+command = "pypy3"
+file_name = "main.py"
+
+[lang.python3]
+command = "python3"
+file_name = "main.py"
+
+[lang.ts]
+command = "ts-node"
+file_name = "main.ts"
