@@ -4,6 +4,7 @@ import platform
 from pathlib import Path
 
 from acac import __version__, core
+from acac.config import load_config
 from acac.util import console, includes
 
 HELP_MESSAGE = """\
@@ -45,4 +46,4 @@ def main(args: list[str]) -> None:
     if args[0] == "init":
         return
 
-    core.main(args)
+    core.main(args, load_config())

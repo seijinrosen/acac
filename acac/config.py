@@ -1,4 +1,5 @@
 import shutil
+import sys
 from pathlib import Path
 from typing import Dict
 
@@ -30,16 +31,14 @@ class Config(BaseModel):
     lang: Dict[str, LangSetting]
 
 
-if not ACAC_TOML.exists():
-    shutil.copy(DEFAULT_ACAC_TOML, ACAC_TOML)
-    console.print("Created:", ACAC_TOML, "\n")
+def load_config() -> Config:
+    if not ACAC_TOML.exists():
+        console.print("このディレクトリ内に acac.toml が見つかりませんでした。")
+        y_or_n = input("作成しますか？ (y/N): ")
+        if y_or_n == "y":
+            shutil.copy(DEFAULT_ACAC_TOML, ACAC_TOML)
+            console.print("Created:", ACAC_TOML, "\n")
+        else:
+            sys.exit("Bye.")
 
-
-_config = Config(**tomli.loads(ACAC_TOML.read_text(encoding=UTF_8)))
-
-default_lang = _config.default_lang
-editor_command = _config.editor_command
-templates_dir = _config.templates_dir
-
-create = _config.create
-lang_settings = _config.lang
+    return Config(**tomli.loads(ACAC_TOML.read_text(encoding=UTF_8)))

@@ -7,7 +7,8 @@ from pathlib import Path
 import pyperclip
 from pydantic import BaseModel
 
-from acac import algo_method, atcoder, config
+from acac import algo_method, atcoder
+from acac.config import Config
 from acac.share import Folder, ProblemType
 from acac.util import UTF_8, console, dump_to_toml, get_soup, get_title, request_bytes
 
@@ -17,7 +18,7 @@ class Metadata(BaseModel):
     url: str
 
 
-def main(url: str, folder: Folder, problem_type: ProblemType) -> None:
+def main(url: str, folder: Folder, problem_type: ProblemType, config: Config) -> None:
     folder.path.mkdir(parents=True, exist_ok=True)
 
     if not folder.exec_file.exists():

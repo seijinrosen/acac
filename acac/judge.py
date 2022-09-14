@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from rich.markup import escape
 from rich.table import Table
 
-from acac import config
+from acac.config import Config
 from acac.share import Folder
 from acac.util import UTF_8, console, run_with_log
 
@@ -28,8 +28,8 @@ class Result(BaseModel):
     execution_ms: int
 
 
-def main(folder: Folder, lang: str) -> None:
-    lang_command = get_lang_command(config.lang_settings[lang].command)
+def main(folder: Folder, lang: str, config: Config) -> None:
+    lang_command = get_lang_command(config.lang[lang].command)
     run_with_log([lang_command, "--version"], check=True)
     io_samples = load_io_samples(folder.in_, folder.out)
 
