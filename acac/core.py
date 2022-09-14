@@ -30,7 +30,7 @@ def get_problem_type(url: str) -> ProblemType:
 
 
 def get_lang(args: list[str], default_lang: str) -> str:
-    for x in args:
+    for x in args[::-1]:
         if x.startswith(("-l=", "--lang=", "lang=")):
             return x.split("=")[1]
     return default_lang
