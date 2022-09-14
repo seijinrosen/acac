@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from acac import algo_method, atcoder, config, judge, new
+from acac import algo_method, atcoder, config, create, judge
 from acac.share import Folder, ProblemType
 from acac.util import includes
 
@@ -17,7 +17,7 @@ def main(args: list[str]) -> None:
     if includes(args, {"-j", "--judge"}):
         judge.main(folder, lang)
     else:
-        new.main(url, folder, problem_type)
+        create.main(url, folder, problem_type)
 
 
 def get_problem_type(url: str) -> ProblemType:

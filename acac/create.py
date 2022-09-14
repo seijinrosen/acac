@@ -46,12 +46,12 @@ def main(url: str, folder: Folder, problem_type: ProblemType) -> None:
         dump_samples(get_samples("入"), folder.in_)
         dump_samples(get_samples("出"), folder.out)
 
-    if config.new.auto_git_add:
+    if config.create.auto_git_add:
         subprocess.run(
             ["git", "add", folder.in_, folder.out, folder.metadata_toml], check=True
         )
 
-    if config.new.auto_editor_open:
+    if config.create.auto_editor_open:
         subprocess.run([config.editor_command, ".", folder.exec_file], check=True)
 
     commit_message = "Create: " + url

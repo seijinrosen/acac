@@ -13,7 +13,7 @@ default_lang = "pypy3"
 editor_command = "code"
 templates_dir = "templates"
 
-[new]
+[create]
 auto_editor_open = true
 auto_git_add = false
 
@@ -35,7 +35,7 @@ file_name = "main.ts"
 """
 
 
-class New(BaseModel):
+class Create(BaseModel):
     auto_editor_open: bool
     auto_git_add: bool
 
@@ -49,7 +49,7 @@ class Config(BaseModel):
     default_lang: str
     editor_command: str
     templates_dir: Path
-    new: New
+    create: Create
     lang: Dict[str, LangSetting]
 
 
@@ -64,5 +64,5 @@ default_lang = _config.default_lang
 editor_command = _config.editor_command
 templates_dir = _config.templates_dir
 
-new = _config.new
+create = _config.create
 lang_settings = _config.lang
