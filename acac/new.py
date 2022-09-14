@@ -4,6 +4,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
+import pyperclip
 from pydantic import BaseModel
 
 from acac import algo_method, atcoder, config
@@ -52,6 +53,11 @@ def main(url: str, folder: Folder, problem_type: ProblemType) -> None:
 
     if config.new.auto_editor_open:
         subprocess.run([config.editor_command, ".", folder.exec_file], check=True)
+
+    commit_message = "Create: " + url
+    pyperclip.copy(commit_message)  # type: ignore
+    console.print("以下の文字列がクリップボードにコピーされました。")
+    console.print(commit_message)
 
 
 def dump_samples(samples: list[str], io_dir: Path) -> None:
