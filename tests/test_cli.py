@@ -86,4 +86,6 @@ def test_print_version(capsys: CaptureFixture[str]):
     cli.print_version()
     out, err = capsys.readouterr()
     assert err == ""
-    assert __version__ in out
+    assert "acac" in out
+    assert "Python" in out
+    assert "from" in out
