@@ -50,15 +50,21 @@ def main(
 
     if all(r.is_accepted for r in results):
         console.print("All Completed! AC!!!:thumbs_up:", style="green")
+
+        source_code = folder.exec_file.read_text(encoding=UTF_8)
+        pyperclip.copy(source_code)  # type: ignore
+        console.print("[bold]Copied source code to clipboard:", folder.exec_file)
+
+        if problem_type in {"algo_method", "atcoder"} and confirm_yN("他の人の提出を確認しますか？"):
+            webbrowser.open(get_ac_url(problem_type, url, lang))
+
         if config.judge.clipboard_message:
             clipboard_message = config.judge.clipboard_message.replace(
                 "${url}", url
             ).replace("${lang}", lang)
             pyperclip.copy(clipboard_message)  # type: ignore
-            console.print("以下の文字列がクリップボードにコピーされました。")
-            console.print(clipboard_message)
-        if problem_type in {"algo_method", "atcoder"} and confirm_yN("他の人の提出を確認しますか？"):
-            webbrowser.open(get_ac_url(problem_type, url, lang))
+            console.print("Copied to clipboard:", style="bold")
+            print(" ", clipboard_message)
     else:
         console.print("WA...:", end=" ", style="red")
         console.print(*[r.name for r in results if not r.is_accepted])
