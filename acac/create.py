@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pyperclip
 from pydantic import BaseModel
+from rich.markup import escape
 
 from acac import algo_method, atcoder
 from acac.config import Config
@@ -69,8 +70,7 @@ def main(url: str, folder: Folder, problem_type: ProblemType, config: Config) ->
     if config.create.clipboard_message:
         clipboard_message = config.create.clipboard_message.replace("${url}", url)
         pyperclip.copy(clipboard_message)  # type: ignore
-        console.print("Copied to clipboard:", style="bold")
-        print(" ", clipboard_message)
+        console.print("[bold]Copied to clipboard:", escape(clipboard_message))
 
 
 def dump_samples(samples: list[str], io_dir: Path) -> None:
@@ -80,7 +80,10 @@ def dump_samples(samples: list[str], io_dir: Path) -> None:
 
     for i, sample_str in enumerate(samples, start=1):
         file = io_dir / f"{i:02}.txt"
-        if sample_str == "":
-            file.touch()
-        else:
-            file.write_text(sample_str + "\n", encoding=UTF_8)
+        if not file.exists():
+            if sample_str == "":
+                file.touch()
+                console.print("[bold]touch:", file)
+            else:
+                file.write_text(sample_str + "\n", encoding=UTF_8)
+                console.print("[bold]Created:", file)

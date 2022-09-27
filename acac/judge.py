@@ -56,15 +56,16 @@ def main(
         console.print("[bold]Copied source code to clipboard:", folder.exec_file)
 
         if problem_type in {"algo_method", "atcoder"} and confirm_yN("他の人の提出を確認しますか？"):
-            webbrowser.open(get_ac_url(problem_type, url, lang))
+            ac_url = get_ac_url(problem_type, url, lang)
+            webbrowser.open(ac_url)
+            console.print("[bold]Opened:", ac_url)
 
         if config.judge.clipboard_message:
             clipboard_message = config.judge.clipboard_message.replace(
                 "${url}", url
             ).replace("${lang}", lang)
             pyperclip.copy(clipboard_message)  # type: ignore
-            console.print("Copied to clipboard:", style="bold")
-            print(" ", clipboard_message)
+            console.print("[bold]Copied to clipboard:", escape(clipboard_message))
     else:
         console.print("WA...:", end=" ", style="red")
         console.print(*[r.name for r in results if not r.is_accepted])
