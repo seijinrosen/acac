@@ -13,4 +13,4 @@ class Folder(BaseModel):
     out: Path
     cache_html: Path
     metadata_toml: Path
-    exec_file: Path
+    source_file: Path

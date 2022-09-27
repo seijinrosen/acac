@@ -41,19 +41,19 @@ def main(
 
     if lang == "cpp":
         a_out = folder.path / "a.out"
-        run_with_log([lang_command, folder.exec_file, "-o", a_out], check=True)
+        run_with_log([lang_command, folder.source_file, "-o", a_out], check=True)
         results = get_results([a_out], io_samples)
     else:
-        results = get_results([lang_command, folder.exec_file], io_samples)
+        results = get_results([lang_command, folder.source_file], io_samples)
 
     console.print(create_table(results))
 
     if all(r.is_accepted for r in results):
         console.print("All Completed! AC!!!:thumbs_up:", style="green")
 
-        source_code = folder.exec_file.read_text(encoding=UTF_8)
+        source_code = folder.source_file.read_text(encoding=UTF_8)
         pyperclip.copy(source_code)  # type: ignore
-        console.print("[bold]Copied source code to clipboard:", folder.exec_file)
+        console.print("[bold]Copied source code to clipboard:", folder.source_file)
 
         if problem_type in {"algo_method", "atcoder"} and confirm_yN("他の人の提出を確認しますか？"):
             ac_url = get_ac_url(problem_type, url, lang)

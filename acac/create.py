@@ -33,10 +33,10 @@ def main(
         folder.path.mkdir(parents=True)
         console.print("[bold]mkdir:", folder.path)
 
-    if not folder.exec_file.exists():
+    if not folder.source_file.exists():
         template_file = config.lang[lang].template
-        shutil.copy(template_file, folder.exec_file)
-        console.print("[bold]Copied:", template_file, "->", folder.exec_file)
+        shutil.copy(template_file, folder.source_file)
+        console.print("[bold]Copied:", template_file, "->", folder.source_file)
 
     if not folder.cache_html.exists():
         if problem_type == "atcoder":
@@ -67,7 +67,7 @@ def main(
         )
 
     if config.create.auto_editor_open:
-        run_with_log([config.editor.command, ".", folder.exec_file], check=True)
+        run_with_log([config.editor.command, ".", folder.source_file], check=True)
 
     if config.create.clipboard_message:
         clipboard_message = config.create.clipboard_message.replace("${url}", url)
