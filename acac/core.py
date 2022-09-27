@@ -18,7 +18,7 @@ def main(args: list[str], config: Config) -> None:
     if includes(args, {"-j", "--judge"}):
         judge.main(url, folder, problem_type, lang, config)
     else:
-        create.main(url, folder, problem_type, config)
+        create.main(url, folder, problem_type, lang, config)
 
 
 def get_problem_type(url: str) -> ProblemType:

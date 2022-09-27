@@ -29,11 +29,11 @@ class Judge(BaseModel):
 class LangSetting(BaseModel):
     command: str
     file_name: str
+    template: Path
 
 
 class Config(BaseModel):
     default_lang: str
-    templates_dir: Path
     editor: Editor
     create: Create
     judge: Judge

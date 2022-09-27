@@ -1,5 +1,4 @@
 default_lang = "pypy3"
-templates_dir = "templates"
 
 [editor]
 command = "code"
@@ -15,15 +14,19 @@ clipboard_message = "AC: ${url} ${lang}"
 [lang.cpp]
 command = "g++"
 file_name = "main.cpp"
+template = "templates/main.cpp"
 
 [lang.pypy3]
 command = "pypy3"
 file_name = "main.py"
+template = "templates/main.py"
 
 [lang.python3]
 command = "python3"
 file_name = "main.py"
+template = "templates/main.py"
 
 [lang.ts]
 command = "ts-node"
 file_name = "main.ts"
+template = "templates/main.ts"

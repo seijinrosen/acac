@@ -26,13 +26,15 @@ class Metadata(BaseModel):
     url: str
 
 
-def main(url: str, folder: Folder, problem_type: ProblemType, config: Config) -> None:
+def main(
+    url: str, folder: Folder, problem_type: ProblemType, lang: str, config: Config
+) -> None:
     if not folder.path.exists():
         folder.path.mkdir(parents=True)
         console.print("[bold]mkdir:", folder.path)
 
     if not folder.exec_file.exists():
-        template_file = config.templates_dir / folder.exec_file.name
+        template_file = config.lang[lang].template
         shutil.copy(template_file, folder.exec_file)
         console.print("[bold]Copied:", template_file, "->", folder.exec_file)
 
