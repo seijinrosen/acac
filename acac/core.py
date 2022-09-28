@@ -3,22 +3,26 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+from typing_extensions import Literal
+
 from acac import algo_method, atcoder, create, judge
 from acac.config import Config
 from acac.share import Folder, ProblemType
-from acac.util import includes
 
 
 def main(args: list[str], config: Config) -> None:
     url = args[0]
     problem_type = get_problem_type(url)
-    lang = get_lang(args, config.default_lang)
-    folder = get_folder(url, get_source_file_name(args, config.lang[lang].file_name))
+    lang_name = get_lang_name(args, config.language.default)
+    source_file_name = get_source_file_name(
+        args, config.language.settings[lang_name].source_file_name
+    )
+    folder = get_folder(url, source_file_name)
 
-    if includes(args, {"-j", "--judge"}):
-        judge.main(url, folder, problem_type, lang, config)
+    if get_mode(args) == "create":
+        create.main(url, folder, problem_type, lang_name, config)
     else:
-        create.main(url, folder, problem_type, lang, config)
+        judge.main(url, folder, problem_type, lang_name, config)
 
 
 def get_problem_type(url: str) -> ProblemType:
@@ -29,7 +33,7 @@ def get_problem_type(url: str) -> ProblemType:
     return "else"
 
 
-def get_lang(args: list[str], default_lang: str) -> str:
+def get_lang_name(args: list[str], default_lang: str) -> str:
     for x in args[::-1]:
         if x.startswith(("-l=", "--lang=", "lang=")):
             return x.split("=")[1]
@@ -53,3 +57,12 @@ def get_folder(url: str, source_file_name: str) -> Folder:
         metadata_toml=folder_path / "metadata.toml",
         source_file=folder_path / source_file_name,
     )
+
+
+def get_mode(args: list[str]) -> Literal["create", "judge"]:
+    for x in args[::-1]:
+        if x in {"-c", "--create"}:
+            return "create"
+        elif x in {"-j", "--judge"}:
+            return "judge"
+    return "create"

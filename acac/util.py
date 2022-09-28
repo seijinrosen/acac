@@ -22,7 +22,7 @@ def includes(args: list[str], flags: set[str]) -> bool:
 
 # subprocess
 def run_with_log(
-    cmd_args: list[str | Path],
+    cmd_args: list[str] | list[Path] | list[str | Path],
     capture_output: bool = False,
     check: bool = False,
     input: str | None = None,

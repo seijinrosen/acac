@@ -1,5 +1,3 @@
-default_lang = "pypy3"
-
 [editor]
 command = "code"
 
@@ -11,22 +9,34 @@ clipboard_message = "Create: ${url}"
 [judge]
 clipboard_message = "AC: ${url} ${lang}"
 
-[lang.cpp]
-command = "g++"
-file_name = "main.cpp"
-template = "templates/main.cpp"
+[language]
+default = "pypy3"
 
-[lang.pypy3]
-command = "pypy3"
-file_name = "main.py"
-template = "templates/main.py"
+[language.settings.cpp]
+source_file_name = "main.cpp"
+template_file = "templates/main.cpp"
+[language.settings.cpp.commands]
+version = "g++ --version"
+compile = "g++ ${source_file} -o ${dir}/a.out"
+execute = "${dir}/a.out"
 
-[lang.python3]
-command = "python3"
-file_name = "main.py"
-template = "templates/main.py"
+[language.settings.pypy3]
+source_file_name = "main.py"
+template_file = "templates/main.py"
+[language.settings.pypy3.commands]
+version = "pypy3 --version"
+execute = "pypy3 ${source_file}"
 
-[lang.ts]
-command = "ts-node"
-file_name = "main.ts"
-template = "templates/main.ts"
+[language.settings.python3]
+source_file_name = "main.py"
+template_file = "templates/main.py"
+[language.settings.python3.commands]
+version = "python3 --version"
+execute = "python3 ${source_file}"
+
+[language.settings.ts]
+source_file_name = "main.ts"
+template_file = "templates/main.ts"
+[language.settings.ts.commands]
+version = "ts-node --version"
+execute = "ts-node ${source_file}"

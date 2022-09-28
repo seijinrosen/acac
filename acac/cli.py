@@ -11,14 +11,18 @@ HELP_MESSAGE = """\
 競プロ便利ツール。
 
 [bold]Usage:[/bold]
-  acac
+  acac <url> \\[options]
 
 [bold]Options:[/bold]
-  [blue]-j[/blue]              judge.
+  [blue]-c, --create[/blue]           Create environment mode. (default)
+  [blue]-j, --judge[/blue]            Judge mode.
+
+  [blue]-f, --file, file=FILE[/blue]  ソースファイル名を指定する。
+  [blue]-l, --lang, lang=LANG[/blue]  言語を指定する。
 
 [bold]Global options:[/bold]
-  [blue]-h, --help[/blue]      Show this help message and exit.
-  [blue]-V, --version[/blue]   Show program's version number and exit.
+  [blue]-h, --help[/blue]             Show this help message and exit.
+  [blue]-V, --version[/blue]          Show program's version number and exit.
 
 See https://github.com/seijinrosen/acac for more information.\
 """

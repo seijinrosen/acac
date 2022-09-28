@@ -27,14 +27,14 @@ class Metadata(BaseModel):
 
 
 def main(
-    url: str, folder: Folder, problem_type: ProblemType, lang: str, config: Config
+    url: str, folder: Folder, problem_type: ProblemType, lang_name: str, config: Config
 ) -> None:
     if not folder.path.exists():
         folder.path.mkdir(parents=True)
         console.print("[bold]mkdir:", folder.path)
 
     if not folder.source_file.exists():
-        template_file = config.lang[lang].template
+        template_file = config.language.settings[lang_name].template_file.expanduser()
         shutil.copy(template_file, folder.source_file)
         console.print("[bold]Copied:", template_file, "->", folder.source_file)
 

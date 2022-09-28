@@ -17,27 +17,36 @@ class Editor(BaseModel):
 
 
 class Create(BaseModel):
-    auto_editor_open: bool
-    auto_git_add: bool
-    clipboard_message: str
+    auto_editor_open: bool = False
+    auto_git_add: bool = False
+    clipboard_message: str = ""
 
 
 class Judge(BaseModel):
-    clipboard_message: str
+    clipboard_message: str = ""
 
 
-class LangSetting(BaseModel):
-    command: str
-    file_name: str
-    template: Path
+class LanguageSetting(BaseModel):
+    class Commands(BaseModel):
+        version: str = ""
+        compile: str = ""
+        execute: str
+
+    source_file_name: str
+    template_file: Path
+    commands: Commands
+
+
+class Language(BaseModel):
+    default: str
+    settings: Dict[str, LanguageSetting]
 
 
 class Config(BaseModel):
-    default_lang: str
     editor: Editor
     create: Create
     judge: Judge
-    lang: Dict[str, LangSetting]
+    language: Language
 
 
 def load_config() -> Config:

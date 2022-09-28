@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import subprocess
 import time
 import webbrowser
@@ -33,18 +34,26 @@ class Result(BaseModel):
 
 
 def main(
-    url: str, folder: Folder, problem_type: ProblemType, lang: str, config: Config
+    url: str, folder: Folder, problem_type: ProblemType, lang_name: str, config: Config
 ) -> None:
-    lang_command = get_lang_command(config.lang[lang].command)
-    run_with_log([lang_command, "--version"], check=True)
-    io_samples = load_io_samples(folder.in_, folder.out)
+    lang_setting = config.language.settings[lang_name]
 
-    if lang == "cpp":
-        a_out = folder.path / "a.out"
-        run_with_log([lang_command, folder.source_file, "-o", a_out], check=True)
-        results = get_results([a_out], io_samples)
-    else:
-        results = get_results([lang_command, folder.source_file], io_samples)
+    if lang_setting.commands.version:
+        run_with_log(
+            [*map(os.path.expanduser, lang_setting.commands.version.split())],
+            check=True,
+        )
+
+    if lang_setting.commands.compile:
+        compile_command = expand_command(
+            lang_setting.commands.compile, folder.path, folder.source_file
+        )
+        run_with_log(compile_command, check=True)
+
+    execute_command = expand_command(
+        lang_setting.commands.execute, folder.path, folder.source_file
+    )
+    results = get_results(execute_command, load_io_samples(folder.in_, folder.out))
 
     console.print(create_table(results))
 
@@ -56,14 +65,14 @@ def main(
         console.print("[bold]Copied source code to clipboard:", folder.source_file)
 
         if problem_type in {"algo_method", "atcoder"} and confirm_yN("他の人の提出を確認しますか？"):
-            ac_url = get_ac_url(problem_type, url, lang)
+            ac_url = get_ac_url(problem_type, url, lang_name)
             webbrowser.open(ac_url)
             console.print("[bold]Opened:", ac_url)
 
         if config.judge.clipboard_message:
             clipboard_message = config.judge.clipboard_message.replace(
                 "${url}", url
-            ).replace("${lang}", lang)
+            ).replace("${lang}", lang_name)
             pyperclip.copy(clipboard_message)  # type: ignore
             console.print("[bold]Copied to clipboard:", escape(clipboard_message))
     else:
@@ -71,10 +80,15 @@ def main(
         console.print(*[r.name for r in results if not r.is_accepted])
 
 
-def get_lang_command(command: str) -> str | Path:
-    if command.startswith("~"):
-        return Path(command).expanduser()
-    return command
+def expand_command(command: str, dir: Path, source_file: Path) -> list[str]:
+    return [
+        *map(
+            os.path.expanduser,
+            command.replace("${dir}", str(dir))
+            .replace("${source_file}", str(source_file))
+            .split(),
+        )
+    ]
 
 
 def load_io_samples(i_dir: Path, o_dir: Path) -> list[IOSample]:
@@ -88,12 +102,12 @@ def load_io_samples(i_dir: Path, o_dir: Path) -> list[IOSample]:
     ]
 
 
-def get_results(cmd_args: list[str | Path], io_samples: list[IOSample]) -> list[Result]:
+def get_results(execute_command: list[str], io_samples: list[IOSample]) -> list[Result]:
     def get_result(io_sample: IOSample) -> Result:
         start = time.time()
-        console.print(f"[bold]Running {io_sample.name}:", *cmd_args)
+        console.print(f"[bold]Running {io_sample.name}:", *execute_command)
         cp = subprocess.run(
-            cmd_args, capture_output=True, input=io_sample.in_, text=True
+            execute_command, capture_output=True, input=io_sample.in_, text=True
         )
         return Result(
             name=io_sample.name,
