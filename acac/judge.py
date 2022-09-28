@@ -14,7 +14,7 @@ from rich.table import Table
 from acac import algo_method, atcoder
 from acac.config import Config
 from acac.share import Folder, ProblemType
-from acac.util import UTF_8, confirm_yN, console, run_with_log
+from acac.util import UTF_8, confirm_yN, console, replace_from_dict, run_with_log
 
 
 class IOSample(BaseModel):
@@ -37,17 +37,21 @@ def main(
     url: str, folder: Folder, problem_type: ProblemType, lang_name: str, config: Config
 ) -> None:
     lang_setting = config.language.settings[lang_name]
+    replace_map = {
+        "${dir}": str(folder.path),
+        "${source_file}": str(folder.source_file),
+    }
 
-    for x in lang_setting.commands.pre_execute:
-        run_with_log(expand_command(x, folder.path, folder.source_file), check=True)
+    for cmd in lang_setting.commands.pre_execute:
+        run_with_log(expand_command(cmd, replace_map), check=True)
 
-    execute_command = expand_command(
-        lang_setting.commands.execute, folder.path, folder.source_file
+    results = get_results(
+        expand_command(lang_setting.commands.execute, replace_map),
+        load_io_samples(folder.in_, folder.out),
     )
-    results = get_results(execute_command, load_io_samples(folder.in_, folder.out))
 
-    for x in lang_setting.commands.post_execute:
-        run_with_log(expand_command(x, folder.path, folder.source_file), check=True)
+    for cmd in lang_setting.commands.post_execute:
+        run_with_log(expand_command(cmd, replace_map), check=True)
 
     console.print(create_table(results))
 
@@ -74,15 +78,8 @@ def main(
         console.print(*[r.name for r in results if not r.is_accepted])
 
 
-def expand_command(command: str, dir: Path, source_file: Path) -> list[str]:
-    return [
-        *map(
-            os.path.expanduser,
-            command.replace("${dir}", str(dir))
-            .replace("${source_file}", str(source_file))
-            .split(),
-        )
-    ]
+def expand_command(command: str, replace_map: dict[str, str]) -> list[str]:
+    return [*map(os.path.expanduser, replace_from_dict(command, replace_map).split())]
 
 
 def load_io_samples(i_dir: Path, o_dir: Path) -> list[IOSample]:
