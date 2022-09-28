@@ -1,7 +1,7 @@
 import shutil
 import sys
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 
 import tomli
 from pydantic import BaseModel
@@ -28,9 +28,9 @@ class Judge(BaseModel):
 
 class LanguageSetting(BaseModel):
     class Commands(BaseModel):
-        version: str = ""
-        compile: str = ""
+        pre_execute: List[str] = []
         execute: str
+        post_execute: List[str] = []
 
     source_file_name: str
     template_file: Path

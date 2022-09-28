@@ -38,22 +38,16 @@ def main(
 ) -> None:
     lang_setting = config.language.settings[lang_name]
 
-    if lang_setting.commands.version:
-        run_with_log(
-            [*map(os.path.expanduser, lang_setting.commands.version.split())],
-            check=True,
-        )
-
-    if lang_setting.commands.compile:
-        compile_command = expand_command(
-            lang_setting.commands.compile, folder.path, folder.source_file
-        )
-        run_with_log(compile_command, check=True)
+    for x in lang_setting.commands.pre_execute:
+        run_with_log(expand_command(x, folder.path, folder.source_file), check=True)
 
     execute_command = expand_command(
         lang_setting.commands.execute, folder.path, folder.source_file
     )
     results = get_results(execute_command, load_io_samples(folder.in_, folder.out))
+
+    for x in lang_setting.commands.post_execute:
+        run_with_log(expand_command(x, folder.path, folder.source_file), check=True)
 
     console.print(create_table(results))
 
