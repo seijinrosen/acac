@@ -16,6 +16,7 @@ from acac.util import (
     dump_to_toml,
     get_soup,
     get_title,
+    replace_from_dict,
     request_bytes,
     run_with_log,
 )
@@ -70,7 +71,13 @@ def main(
         run_with_log([config.editor.command, ".", folder.source_file], check=True)
 
     if config.create.clipboard_message:
-        clipboard_message = config.create.clipboard_message.replace("${url}", url)
+        replace_map = {
+            "${lang}": lang_name,
+            "${url}": url,
+        }
+        clipboard_message = replace_from_dict(
+            config.create.clipboard_message, replace_map
+        )
         pyperclip.copy(clipboard_message)  # type: ignore
         console.print("[bold]Copied to clipboard:", escape(clipboard_message))
 

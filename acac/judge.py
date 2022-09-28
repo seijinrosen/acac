@@ -68,9 +68,13 @@ def main(
             console.print("[bold]Opened:", ac_url)
 
         if config.judge.clipboard_message:
-            clipboard_message = config.judge.clipboard_message.replace(
-                "${url}", url
-            ).replace("${lang}", lang_name)
+            replace_map = {
+                "${lang}": lang_name,
+                "${url}": url,
+            }
+            clipboard_message = replace_from_dict(
+                config.judge.clipboard_message, replace_map
+            )
             pyperclip.copy(clipboard_message)  # type: ignore
             console.print("[bold]Copied to clipboard:", escape(clipboard_message))
     else:
