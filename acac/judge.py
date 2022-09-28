@@ -18,9 +18,9 @@ from acac.util import UTF_8, confirm_yN, console, run_with_log
 
 
 class IOSample(BaseModel):
-    name: str
-    in_: str
-    out: str
+    in_file: Path
+    in_text: str
+    out_text: str
 
 
 class Result(BaseModel):
@@ -94,9 +94,9 @@ def expand_command(command: str, dir: Path, source_file: Path) -> list[str]:
 def load_io_samples(i_dir: Path, o_dir: Path) -> list[IOSample]:
     return [
         IOSample(
-            name=i_file.stem,
-            in_=i_file.read_text(encoding=UTF_8),
-            out=o_file.read_text(encoding=UTF_8),
+            in_file=i_file,
+            in_text=i_file.read_text(encoding=UTF_8),
+            out_text=o_file.read_text(encoding=UTF_8),
         )
         for i_file, o_file in zip(sorted(i_dir.iterdir()), sorted(o_dir.iterdir()))
     ]
@@ -105,17 +105,17 @@ def load_io_samples(i_dir: Path, o_dir: Path) -> list[IOSample]:
 def get_results(execute_command: list[str], io_samples: list[IOSample]) -> list[Result]:
     def get_result(io_sample: IOSample) -> Result:
         start = time.time()
-        console.print(f"[bold]Running {io_sample.name}:", *execute_command)
+        console.print("[bold]Running:", *execute_command, "<", io_sample.in_file)
         cp = subprocess.run(
-            execute_command, capture_output=True, input=io_sample.in_, text=True
+            execute_command, capture_output=True, input=io_sample.in_text, text=True
         )
         return Result(
-            name=io_sample.name,
-            input=io_sample.in_,
-            expected=io_sample.out,
+            name=io_sample.in_file.name,
+            input=io_sample.in_text,
+            expected=io_sample.out_text,
             actual=cp.stdout,
             error=cp.stderr,
-            is_accepted=io_sample.out == cp.stdout,
+            is_accepted=io_sample.out_text == cp.stdout,
             execution_ms=int((time.time() - start) * 1000),
         )
 
