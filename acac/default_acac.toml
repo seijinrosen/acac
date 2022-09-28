@@ -38,5 +38,6 @@ execute = "python3 ${source_file}"
 source_file_name = "main.ts"
 template_file = "templates/main.ts"
 [language.settings.ts.commands]
-version = "ts-node --version"
-execute = "ts-node ${source_file}"
+version = "tsc --version"
+compile = "tsc --target ESNEXT --module commonjs ${source_file}"
+execute = "node ${dir}/main.js"
