@@ -40,18 +40,21 @@ def get_problem_type(url: str) -> ProblemType:
     return "else"
 
 
-def get_lang_name(args: list[str], default_lang: str) -> str:
+def get_after_equal_option(
+    args: list[str], prefix: tuple[str, ...], default: str
+) -> str:
     for x in args[::-1]:
-        if x.startswith(("-l=", "--lang=", "lang=")):
+        if x.startswith(prefix):
             return x.split("=")[1]
-    return default_lang
+    return default
 
 
-def get_source_file_name(args: list[str], default_file_name: str) -> str:
-    for x in args[::-1]:
-        if x.startswith(("-s=", "--source=", "source=")):
-            return x.split("=")[1]
-    return default_file_name
+def get_lang_name(args: list[str], default: str) -> str:
+    return get_after_equal_option(args, ("-l=", "--lang=", "lang="), default)
+
+
+def get_source_file_name(args: list[str], default: str) -> str:
+    return get_after_equal_option(args, ("-s=", "--source=", "source="), default)
 
 
 def get_folder(url: str, source_file_name: str) -> Folder:
