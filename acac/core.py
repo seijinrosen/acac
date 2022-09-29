@@ -48,7 +48,7 @@ def get_lang_name(args: list[str], default_lang: str) -> str:
 
 def get_source_file_name(args: list[str], default_file_name: str) -> str:
     for x in args[::-1]:
-        if x.startswith(("-f=", "--file=", "file=")):
+        if x.startswith(("-s=", "--source=", "source=")):
             return x.split("=")[1]
     return default_file_name
 
