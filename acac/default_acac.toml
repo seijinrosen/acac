@@ -1,7 +1,7 @@
 [create]
 post_create_commands = [
-    "git add ${dir}/in ${dir}/out ${dir}/metadata.toml",
-    "code . ${source_file}",
+    "git add ${dir_path}/in ${dir_path}/out ${dir_path}/metadata.toml",
+    "code . ${source_file_path}",
 ]
 clipboard_message = "Create: ${url}"
 
@@ -17,13 +17,13 @@ template_file_path = "templates/main.cpp"
 [language.settings.cpp.commands]
 pre_execute = [
     "g++ --version",
-    "g++ ${source_file} -o ${dir}/a.out",
+    "g++ ${source_file_path} -o ${dir_path}/a.out",
 ]
-execute = "${dir}/a.out"
+execute = "${dir_path}/a.out"
 
 [language.settings.python3]
 source_file_name = "main.py"
 template_file_path = "templates/main.py"
 [language.settings.python3.commands]
 pre_execute = ["python3 --version"]
-execute = "python3 ${source_file}"
+execute = "python3 ${source_file_path}"
