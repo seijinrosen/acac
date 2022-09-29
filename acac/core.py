@@ -17,9 +17,19 @@ def main(args: list[str], config: Config) -> None:
     source_file_name = get_source_file_name(
         args, config.language.settings[lang_name].source_file_name
     )
-    folder = get_folder(url, source_file_name)
+    dir_path = Path(get_dir_path(url))
+
+    folder = Folder(
+        dir_path=dir_path,
+        in_=dir_path / "in",
+        out=dir_path / "out",
+        cache_html=dir_path / "cache.html",
+        metadata_toml=dir_path / "metadata.toml",
+        source_file=dir_path / source_file_name,
+    )
+
     replace_map = {
-        "${dir}": str(folder.dir_path),
+        "${dir}": str(dir_path),
         "${lang}": lang_name,
         "${source_file_name}": source_file_name,
         "${source_file}": str(folder.source_file),
@@ -54,20 +64,11 @@ def get_source_file_name(args: list[str], default: str) -> str:
     return get_after_equal_option(args, ("-s=", "--source=", "source="), default)
 
 
-def get_folder(url: str, source_file_name: str) -> Folder:
+def get_dir_path(url: str) -> str:
     if url.startswith(("http://", "https://")):
-        folder_path = Path(os.path.join(*url.split("/")[2:]))
+        return os.path.join(*url.split("/")[2:])
     else:
-        folder_path = Path(os.path.join(*url.split("/")))
-
-    return Folder(
-        dir_path=folder_path,
-        in_=folder_path / "in",
-        out=folder_path / "out",
-        cache_html=folder_path / "cache.html",
-        metadata_toml=folder_path / "metadata.toml",
-        source_file=folder_path / source_file_name,
-    )
+        return os.path.join(*url.split("/"))
 
 
 def get_mode(args: list[str]) -> Literal["create", "judge"]:
