@@ -28,7 +28,12 @@ class Metadata(BaseModel):
 
 
 def main(
-    url: str, folder: Folder, problem_type: ProblemType, lang_name: str, config: Config
+    url: str,
+    folder: Folder,
+    problem_type: ProblemType,
+    lang_name: str,
+    config: Config,
+    clipboard_replace_map: dict[str, str],
 ) -> None:
     if not folder.path.exists():
         folder.path.mkdir(parents=True)
@@ -71,12 +76,8 @@ def main(
         run_with_log([config.editor.command, ".", folder.source_file], check=True)
 
     if config.create.clipboard_message:
-        replace_map = {
-            "${lang}": lang_name,
-            "${url}": url,
-        }
         clipboard_message = replace_from_dict(
-            config.create.clipboard_message, replace_map
+            config.create.clipboard_message, clipboard_replace_map
         )
         pyperclip.copy(clipboard_message)  # type: ignore
         console.print("[bold]Copied to clipboard:", escape(clipboard_message))

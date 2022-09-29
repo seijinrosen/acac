@@ -34,7 +34,12 @@ class Result(BaseModel):
 
 
 def main(
-    url: str, folder: Folder, problem_type: ProblemType, lang_name: str, config: Config
+    url: str,
+    folder: Folder,
+    problem_type: ProblemType,
+    lang_name: str,
+    config: Config,
+    clipboard_replace_map: dict[str, str],
 ) -> None:
     lang_setting = config.language.settings[lang_name]
     replace_map = {
@@ -68,12 +73,8 @@ def main(
             console.print("[bold]Opened:", ac_url)
 
         if config.judge.clipboard_message:
-            replace_map = {
-                "${lang}": lang_name,
-                "${url}": url,
-            }
             clipboard_message = replace_from_dict(
-                config.judge.clipboard_message, replace_map
+                config.judge.clipboard_message, clipboard_replace_map
             )
             pyperclip.copy(clipboard_message)  # type: ignore
             console.print("[bold]Copied to clipboard:", escape(clipboard_message))
