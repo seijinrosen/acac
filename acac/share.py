@@ -13,7 +13,7 @@ ProblemType = Literal["algo_method", "atcoder", "else"]
 
 
 class Folder(BaseModel):
-    path: Path
+    dir_path: Path
     in_: Path
     out: Path
     cache_html: Path

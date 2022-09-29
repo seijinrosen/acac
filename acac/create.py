@@ -34,9 +34,9 @@ def main(
     config: Config,
     replace_map: dict[str, str],
 ) -> None:
-    if not folder.path.exists():
-        folder.path.mkdir(parents=True)
-        console.print("[bold]mkdir:", folder.path)
+    if not folder.dir_path.exists():
+        folder.dir_path.mkdir(parents=True)
+        console.print("[bold]mkdir:", folder.dir_path)
 
     if not folder.source_file.exists():
         template_file = config.language.settings[lang_name].template_file.expanduser()

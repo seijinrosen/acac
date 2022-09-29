@@ -19,7 +19,7 @@ def main(args: list[str], config: Config) -> None:
     )
     folder = get_folder(url, source_file_name)
     replace_map = {
-        "${dir}": str(folder.path),
+        "${dir}": str(folder.dir_path),
         "${lang}": lang_name,
         "${source_file_name}": source_file_name,
         "${source_file}": str(folder.source_file),
@@ -61,7 +61,7 @@ def get_folder(url: str, source_file_name: str) -> Folder:
         folder_path = Path(os.path.join(*url.split("/")))
 
     return Folder(
-        path=folder_path,
+        dir_path=folder_path,
         in_=folder_path / "in",
         out=folder_path / "out",
         cache_html=folder_path / "cache.html",
