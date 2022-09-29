@@ -54,7 +54,11 @@ def get_source_file_name(args: list[str], default_file_name: str) -> str:
 
 
 def get_folder(url: str, source_file_name: str) -> Folder:
-    folder_path = Path(os.path.join(*url.split("/")[2:]))
+    if url.startswith(("http://", "https://")):
+        folder_path = Path(os.path.join(*url.split("/")[2:]))
+    else:
+        folder_path = Path(os.path.join(*url.split("/")))
+
     return Folder(
         path=folder_path,
         in_=folder_path / "in",
