@@ -21,6 +21,7 @@ def main(args: list[str], config: Config) -> None:
     replace_map = {
         "${dir}": str(folder.path),
         "${lang}": lang_name,
+        "${source_file_name}": source_file_name,
         "${source_file}": str(folder.source_file),
         "${url}": url,
     }
