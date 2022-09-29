@@ -3,9 +3,7 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-import pyperclip
 from pydantic import BaseModel
-from rich.markup import escape
 
 from acac import algo_method, atcoder
 from acac.config import Config
@@ -13,6 +11,7 @@ from acac.share import Folder, ProblemType, expand_command
 from acac.util import (
     UTF_8,
     console,
+    copy2clip_with_log,
     dump_to_toml,
     get_soup,
     get_title,
@@ -71,9 +70,7 @@ def main(
         run_with_log(expand_command(cmd, replace_map), check=True)
 
     if config.create.clipboard_message:
-        clipboard_message = replaced(config.create.clipboard_message, replace_map)
-        pyperclip.copy(clipboard_message)  # type: ignore
-        console.print("[bold]Copied to clipboard:", escape(clipboard_message))
+        copy2clip_with_log(replaced(config.create.clipboard_message, replace_map))
 
 
 def dump_samples(samples: list[str], io_dir: Path) -> None:

@@ -5,12 +5,14 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pyperclip
 import requests
 import tomli_w
 from bs4 import BeautifulSoup, ResultSet, Tag
 from pydantic import BaseModel
 from readchar import key, readchar
 from rich.console import Console
+from rich.markup import escape
 
 UTF_8 = "utf-8"
 console = Console()
@@ -24,6 +26,12 @@ def replaced(s: str, d: dict[str, str]) -> str:
     for old, new in d.items():
         s = s.replace(old, new)
     return s
+
+
+# pyperclip
+def copy2clip_with_log(text: str) -> None:
+    pyperclip.copy(text)  # type: ignore
+    console.print("[bold]Copied to clipboard:", escape(text))
 
 
 # subprocess
