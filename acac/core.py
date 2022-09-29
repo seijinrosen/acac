@@ -43,10 +43,7 @@ def get_problem_type(url: str) -> ProblemType:
 def get_after_equal_option(
     args: list[str], prefix: tuple[str, ...], default: str
 ) -> str:
-    for x in args[::-1]:
-        if x.startswith(prefix):
-            return x.split("=")[1]
-    return default
+    return next((x.split("=")[1] for x in args[::-1] if x.startswith(prefix)), default)
 
 
 def get_lang_name(args: list[str], default: str) -> str:
