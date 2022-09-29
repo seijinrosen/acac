@@ -10,7 +10,7 @@ clipboard_message = "Create: ${url}"
 clipboard_message = "AC: ${url} ${lang}"
 
 [language]
-default = "pypy3"
+default = "python3"
 
 [language.settings.cpp]
 source_file_name = "main.cpp"
@@ -22,26 +22,9 @@ pre_execute = [
 ]
 execute = "${dir}/a.out"
 
-[language.settings.pypy3]
-source_file_name = "main.py"
-template_file = "templates/main.py"
-[language.settings.pypy3.commands]
-pre_execute = ["pypy3 --version"]
-execute = "pypy3 ${source_file}"
-
 [language.settings.python3]
 source_file_name = "main.py"
 template_file = "templates/main.py"
 [language.settings.python3.commands]
 pre_execute = ["python3 --version"]
 execute = "python3 ${source_file}"
-
-[language.settings.ts]
-source_file_name = "main.ts"
-template_file = "templates/main.ts"
-[language.settings.ts.commands]
-pre_execute = [
-    "tsc --version",
-    "tsc --target ESNEXT --module commonjs ${source_file}",
-]
-execute = "node ${dir}/main.js"
