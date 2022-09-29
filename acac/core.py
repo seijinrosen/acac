@@ -32,7 +32,6 @@ def main(args: list[str], config: Config) -> None:
         "${dir_path}": str(dir_path),
         "${lang}": lang_name,
         "${source_file_name}": source_file_name,
-        "${source_file_path}": str(folder.source_file),
         "${url}": url,
     }
 
