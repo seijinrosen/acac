@@ -28,7 +28,7 @@ class LanguageSetting(BaseModel):
         post_execute: List[str] = []
 
     source_file_name: str
-    template_file: Path
+    template_file_path: Path
     commands: Commands
 
 

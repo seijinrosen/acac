@@ -39,7 +39,9 @@ def main(
         console.print("[bold]mkdir:", folder.dir_path)
 
     if not folder.source_file.exists():
-        template_file = config.language.settings[lang_name].template_file.expanduser()
+        template_file = config.language.settings[
+            lang_name
+        ].template_file_path.expanduser()
         shutil.copy(template_file, folder.source_file)
         console.print("[bold]Copied:", template_file, "->", folder.source_file)
 
