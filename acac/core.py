@@ -18,15 +18,17 @@ def main(args: list[str], config: Config) -> None:
         args, config.language.settings[lang_name].source_file_name
     )
     folder = get_folder(url, source_file_name)
-    clipboard_replace_map = {
+    replace_map = {
+        "${dir}": str(folder.path),
         "${lang}": lang_name,
+        "${source_file}": str(folder.source_file),
         "${url}": url,
     }
 
     if get_mode(args) == "create":
-        create.main(url, folder, problem_type, lang_name, config, clipboard_replace_map)
+        create.main(url, folder, problem_type, lang_name, config, replace_map)
     else:
-        judge.main(url, folder, problem_type, lang_name, config, clipboard_replace_map)
+        judge.main(url, folder, problem_type, lang_name, config, replace_map)
 
 
 def get_problem_type(url: str) -> ProblemType:

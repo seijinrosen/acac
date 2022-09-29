@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 import subprocess
 import time
 import webbrowser
@@ -13,7 +12,7 @@ from rich.table import Table
 
 from acac import algo_method, atcoder
 from acac.config import Config
-from acac.share import Folder, ProblemType
+from acac.share import Folder, ProblemType, expand_command
 from acac.util import UTF_8, confirm_yN, console, replace_from_dict, run_with_log
 
 
@@ -39,13 +38,9 @@ def main(
     problem_type: ProblemType,
     lang_name: str,
     config: Config,
-    clipboard_replace_map: dict[str, str],
+    replace_map: dict[str, str],
 ) -> None:
     lang_setting = config.language.settings[lang_name]
-    replace_map = {
-        "${dir}": str(folder.path),
-        "${source_file}": str(folder.source_file),
-    }
 
     for cmd in lang_setting.commands.pre_execute:
         run_with_log(expand_command(cmd, replace_map), check=True)
@@ -74,17 +69,13 @@ def main(
 
         if config.judge.clipboard_message:
             clipboard_message = replace_from_dict(
-                config.judge.clipboard_message, clipboard_replace_map
+                config.judge.clipboard_message, replace_map
             )
             pyperclip.copy(clipboard_message)  # type: ignore
             console.print("[bold]Copied to clipboard:", escape(clipboard_message))
     else:
         console.print("WA...:", end=" ", style="red")
         console.print(*[r.name for r in results if not r.is_accepted])
-
-
-def expand_command(command: str, replace_map: dict[str, str]) -> list[str]:
-    return [*map(os.path.expanduser, replace_from_dict(command, replace_map).split())]
 
 
 def load_io_samples(i_dir: Path, o_dir: Path) -> list[IOSample]:

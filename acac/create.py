@@ -9,7 +9,7 @@ from rich.markup import escape
 
 from acac import algo_method, atcoder
 from acac.config import Config
-from acac.share import Folder, ProblemType
+from acac.share import Folder, ProblemType, expand_command
 from acac.util import (
     UTF_8,
     console,
@@ -33,7 +33,7 @@ def main(
     problem_type: ProblemType,
     lang_name: str,
     config: Config,
-    clipboard_replace_map: dict[str, str],
+    replace_map: dict[str, str],
 ) -> None:
     if not folder.path.exists():
         folder.path.mkdir(parents=True)
@@ -67,17 +67,12 @@ def main(
         dump_samples(get_samples("入"), folder.in_)
         dump_samples(get_samples("出"), folder.out)
 
-    if config.create.auto_git_add:
-        run_with_log(
-            ["git", "add", folder.in_, folder.out, folder.metadata_toml], check=True
-        )
-
-    if config.create.auto_editor_open:
-        run_with_log([config.editor.command, ".", folder.source_file], check=True)
+    for cmd in config.create.post_create_commands:
+        run_with_log(expand_command(cmd, replace_map), check=True)
 
     if config.create.clipboard_message:
         clipboard_message = replace_from_dict(
-            config.create.clipboard_message, clipboard_replace_map
+            config.create.clipboard_message, replace_map
         )
         pyperclip.copy(clipboard_message)  # type: ignore
         console.print("[bold]Copied to clipboard:", escape(clipboard_message))

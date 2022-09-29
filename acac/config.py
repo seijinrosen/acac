@@ -12,13 +12,8 @@ ACAC_TOML = Path("acac.toml")
 DEFAULT_ACAC_TOML = Path(__file__).parent / "default_acac.toml"
 
 
-class Editor(BaseModel):
-    command: str
-
-
 class Create(BaseModel):
-    auto_editor_open: bool = False
-    auto_git_add: bool = False
+    post_create_commands: List[str] = []
     clipboard_message: str = ""
 
 
@@ -43,7 +38,6 @@ class Language(BaseModel):
 
 
 class Config(BaseModel):
-    editor: Editor
     create: Create
     judge: Judge
     language: Language
