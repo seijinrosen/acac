@@ -13,7 +13,7 @@ from rich.table import Table
 from acac import algo_method, atcoder
 from acac.config import Config
 from acac.share import Folder, ProblemType, expand_command
-from acac.util import UTF_8, confirm_yN, console, replace_from_dict, run_with_log
+from acac.util import UTF_8, confirm_yN, console, replaced, run_with_log
 
 
 class IOSample(BaseModel):
@@ -68,9 +68,7 @@ def main(
             console.print("[bold]Opened:", ac_url)
 
         if config.judge.clipboard_message:
-            clipboard_message = replace_from_dict(
-                config.judge.clipboard_message, replace_map
-            )
+            clipboard_message = replaced(config.judge.clipboard_message, replace_map)
             pyperclip.copy(clipboard_message)  # type: ignore
             console.print("[bold]Copied to clipboard:", escape(clipboard_message))
     else:

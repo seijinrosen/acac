@@ -20,7 +20,7 @@ def includes(args: list[str], flags: set[str]) -> bool:
     return any(s in args for s in flags)
 
 
-def replace_from_dict(s: str, d: dict[str, str]) -> str:
+def replaced(s: str, d: dict[str, str]) -> str:
     for old, new in d.items():
         s = s.replace(old, new)
     return s
