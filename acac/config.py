@@ -14,11 +14,12 @@ DEFAULT_ACAC_TOML = Path(__file__).parent / "default_acac.toml"
 
 class Create(BaseModel):
     post_create_commands: List[str] = []
-    clipboard_message: str = ""
+    clipboard_message = ""
 
 
 class Judge(BaseModel):
-    clipboard_message: str = ""
+    copy_source_code_when_ac = False
+    clipboard_message = ""
 
 
 class LanguageSetting(BaseModel):

@@ -65,9 +65,10 @@ def main(
     if all(r.is_accepted for r in results):
         console.print("All Completed! AC!!!:thumbs_up:", style="green")
 
-        source_code = folder.source_file.read_text(encoding=UTF_8)
-        pyperclip.copy(source_code)  # type: ignore
-        console.print("[bold]Copied source code to clipboard:", folder.source_file)
+        if config.judge.copy_source_code_when_ac:
+            source_code = folder.source_file.read_text(encoding=UTF_8)
+            pyperclip.copy(source_code)  # type: ignore
+            console.print("[bold]Copied source code to clipboard:", folder.source_file)
 
         if problem_type in {"algo_method", "atcoder"} and confirm_yN("他の人の提出を確認しますか？"):
             ac_url = get_ac_url(problem_type, url, lang_name)
