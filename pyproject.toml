@@ -29,7 +29,7 @@ black = "^22.8.0"
 isort = "^5.10.1"
 pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
-pytest-mock = "^3.8.2"
+pytest-mock = "^3.9.0"
 
 [tool.poetry.scripts]
 acac = "acac.__main__:main"
