@@ -35,9 +35,15 @@ def main(args: list[str], config: Config) -> None:
         "${url}": url,
     }
 
-    if get_mode(args) == "create":
+    mode = get_mode(args)
+
+    if mode == "create":
         create.main(url, folder, problem_type, lang_name, config, replace_map)
-    else:
+    elif mode == "manual":
+        create.main(
+            url, folder, problem_type, lang_name, config, replace_map, manual=True
+        )
+    elif mode == "judge":
         judge.main(url, folder, problem_type, lang_name, config, replace_map)
 
 
@@ -70,10 +76,12 @@ def get_dir_path(url: str) -> str:
         return os.path.join(*url.split("/"))
 
 
-def get_mode(args: list[str]) -> Literal["create", "judge"]:
+def get_mode(args: list[str]) -> Literal["create", "judge", "manual"]:
     for x in args[::-1]:
         if x in {"-c", "--create"}:
             return "create"
         elif x in {"-j", "--judge"}:
             return "judge"
+        elif x in {"-m", "--manual"}:
+            return "manual"
     return "create"

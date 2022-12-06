@@ -10,6 +10,7 @@ from acac.config import Config
 from acac.share import Folder, ProblemType, expand_command
 from acac.util import (
     UTF_8,
+    confirm_yN,
     console,
     copy2clip_with_log,
     dump_to_toml,
@@ -33,6 +34,7 @@ def main(
     lang_name: str,
     config: Config,
     replace_map: dict[str, str],
+    manual: bool = False,
 ) -> None:
     if not folder.dir_path.exists():
         folder.dir_path.mkdir(parents=True)
@@ -46,11 +48,18 @@ def main(
         console.print("[bold]Copied:", template_file, "->", folder.source_file)
 
     if not folder.cache_html.exists():
-        if problem_type == "atcoder":
+        if manual:
+            console.print("マニュアルモード")
+            if confirm_yN("HTML ファイルを配置しましたか？"):
+                html_file = next(folder.dir_path.glob("*.html"))
+                html_file.rename(folder.cache_html)
+                console.print("[bold]Renamed:", html_file, "->", folder.cache_html)
+        elif problem_type == "atcoder":
             folder.cache_html.write_bytes(request_bytes(url + "?lang=ja"))
+            console.print("[bold]Dumped:", folder.cache_html)
         else:
             folder.cache_html.write_bytes(request_bytes(url))
-        console.print("[bold]Dumped:", folder.cache_html)
+            console.print("[bold]Dumped:", folder.cache_html)
 
     soup = get_soup(folder.cache_html.read_bytes())
 

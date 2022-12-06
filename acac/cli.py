@@ -16,6 +16,7 @@ HELP_MESSAGE = """\
 [bold]Options:[/bold]
   [blue]-c, --create[/blue]                           Create environment mode. (default)
   [blue]-j, --judge[/blue]                            Judge mode.
+  [blue]-m, --manual[/blue]                           URL にアクセスせず、HTML ファイルを手動で配置してテストケースを作成するモード。
 
   [blue]-l, --lang,   lang=LANG_NAME[/blue]           言語を指定する。
   [blue]-s, --source, source=SOURCE_FILE_NAME[/blue]  ソースファイル名を指定する。
