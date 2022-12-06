@@ -5,12 +5,14 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pyperclip
 import requests
 import tomli_w
 from bs4 import BeautifulSoup, ResultSet, Tag
 from pydantic import BaseModel
 from readchar import key, readchar
 from rich.console import Console
+from rich.markup import escape
 
 UTF_8 = "utf-8"
 console = Console()
@@ -20,9 +22,21 @@ def includes(args: list[str], flags: set[str]) -> bool:
     return any(s in args for s in flags)
 
 
+def replaced(s: str, d: dict[str, str]) -> str:
+    for old, new in d.items():
+        s = s.replace(old, new)
+    return s
+
+
+# pyperclip
+def copy2clip_with_log(text: str) -> None:
+    pyperclip.copy(text)  # type: ignore
+    console.print("[bold]Copied to clipboard:", escape(text))
+
+
 # subprocess
 def run_with_log(
-    cmd_args: list[str | Path],
+    cmd_args: list[str] | list[Path] | list[str | Path],
     capture_output: bool = False,
     check: bool = False,
     input: str | None = None,

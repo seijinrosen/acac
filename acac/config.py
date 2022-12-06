@@ -1,7 +1,7 @@
 import shutil
 import sys
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 
 import tomli
 from pydantic import BaseModel
@@ -12,32 +12,36 @@ ACAC_TOML = Path("acac.toml")
 DEFAULT_ACAC_TOML = Path(__file__).parent / "default_acac.toml"
 
 
-class Editor(BaseModel):
-    command: str
-
-
 class Create(BaseModel):
-    auto_editor_open: bool
-    auto_git_add: bool
-    clipboard_message: str
+    post_create_commands: List[str] = []
+    clipboard_message = ""
 
 
 class Judge(BaseModel):
-    clipboard_message: str
+    copy_source_code_when_ac = False
+    clipboard_message = ""
 
 
-class LangSetting(BaseModel):
-    command: str
-    file_name: str
+class LanguageSetting(BaseModel):
+    class Commands(BaseModel):
+        pre_execute: List[str] = []
+        execute: str
+        post_execute: List[str] = []
+
+    source_file_name: str
+    template_file_path: Path
+    commands: Commands
+
+
+class Language(BaseModel):
+    default: str
+    settings: Dict[str, LanguageSetting]
 
 
 class Config(BaseModel):
-    default_lang: str
-    templates_dir: Path
-    editor: Editor
     create: Create
     judge: Judge
-    lang: Dict[str, LangSetting]
+    language: Language
 
 
 def load_config() -> Config:

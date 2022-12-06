@@ -3,22 +3,48 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+from typing_extensions import Literal
+
 from acac import algo_method, atcoder, create, judge
 from acac.config import Config
 from acac.share import Folder, ProblemType
-from acac.util import includes
 
 
 def main(args: list[str], config: Config) -> None:
     url = args[0]
     problem_type = get_problem_type(url)
-    lang = get_lang(args, config.default_lang)
-    folder = get_folder(url, config.lang[lang].file_name)
+    lang_name = get_lang_name(args, config.language.default)
+    source_file_name = get_source_file_name(
+        args, config.language.settings[lang_name].source_file_name
+    )
+    dir_path = Path(get_dir_path(url))
 
-    if includes(args, {"-j", "--judge"}):
-        judge.main(url, folder, problem_type, lang, config)
-    else:
-        create.main(url, folder, problem_type, config)
+    folder = Folder(
+        dir_path=dir_path,
+        in_=dir_path / "in",
+        out=dir_path / "out",
+        cache_html=dir_path / "cache.html",
+        metadata_toml=dir_path / "metadata.toml",
+        source_file=dir_path / source_file_name,
+    )
+
+    replace_map = {
+        "${dir_path}": str(dir_path),
+        "${lang}": lang_name,
+        "${source_file_name}": source_file_name,
+        "${url}": url,
+    }
+
+    mode = get_mode(args)
+
+    if mode == "create":
+        create.main(url, folder, problem_type, lang_name, config, replace_map)
+    elif mode == "manual":
+        create.main(
+            url, folder, problem_type, lang_name, config, replace_map, manual=True
+        )
+    elif mode == "judge":
+        judge.main(url, folder, problem_type, lang_name, config, replace_map)
 
 
 def get_problem_type(url: str) -> ProblemType:
@@ -29,20 +55,33 @@ def get_problem_type(url: str) -> ProblemType:
     return "else"
 
 
-def get_lang(args: list[str], default_lang: str) -> str:
+def get_after_equal_option(
+    args: list[str], prefix: tuple[str, ...], default: str
+) -> str:
+    return next((x.split("=")[1] for x in args[::-1] if x.startswith(prefix)), default)
+
+
+def get_lang_name(args: list[str], default: str) -> str:
+    return get_after_equal_option(args, ("-l=", "--lang=", "lang="), default)
+
+
+def get_source_file_name(args: list[str], default: str) -> str:
+    return get_after_equal_option(args, ("-s=", "--source=", "source="), default)
+
+
+def get_dir_path(url: str) -> str:
+    if url.startswith(("http://", "https://")):
+        return os.path.join(*url.split("/")[2:])
+    else:
+        return os.path.join(*url.split("/"))
+
+
+def get_mode(args: list[str]) -> Literal["create", "judge", "manual"]:
     for x in args[::-1]:
-        if x.startswith(("-l=", "--lang=", "lang=")):
-            return x.split("=")[1]
-    return default_lang
-
-
-def get_folder(url: str, lang_file_name: str) -> Folder:
-    folder_path = Path(os.path.join(*url.split("/")[2:]))
-    return Folder(
-        path=folder_path,
-        in_=folder_path / "in",
-        out=folder_path / "out",
-        cache_html=folder_path / "cache.html",
-        metadata_toml=folder_path / "metadata.toml",
-        exec_file=folder_path / lang_file_name,
-    )
+        if x in {"-c", "--create"}:
+            return "create"
+        elif x in {"-j", "--judge"}:
+            return "judge"
+        elif x in {"-m", "--manual"}:
+            return "manual"
+    return "create"

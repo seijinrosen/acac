@@ -1,29 +1,30 @@
-default_lang = "pypy3"
-templates_dir = "templates"
-
-[editor]
-command = "code"
-
 [create]
-auto_editor_open = true
-auto_git_add = false
+post_create_commands = [
+    "git add ${dir_path}/in ${dir_path}/out ${dir_path}/metadata.toml",
+    "code . ${dir_path}/${source_file_name}",
+]
 clipboard_message = "Create: ${url}"
 
 [judge]
+copy_source_code_when_ac = true
 clipboard_message = "AC: ${url} ${lang}"
 
-[lang.cpp]
-command = "g++"
-file_name = "main.cpp"
+[language]
+default = "python3"
 
-[lang.pypy3]
-command = "pypy3"
-file_name = "main.py"
+[language.settings.cpp]
+source_file_name = "main.cpp"
+template_file_path = "templates/main.cpp"
+[language.settings.cpp.commands]
+pre_execute = [
+    "g++ --version",
+    "g++ ${dir_path}/${source_file_name} -o ${dir_path}/a.out",
+]
+execute = "${dir_path}/a.out"
 
-[lang.python3]
-command = "python3"
-file_name = "main.py"
-
-[lang.ts]
-command = "ts-node"
-file_name = "main.ts"
+[language.settings.python3]
+source_file_name = "main.py"
+template_file_path = "templates/main.py"
+[language.settings.python3.commands]
+pre_execute = ["python3 --version"]
+execute = "python3 ${dir_path}/${source_file_name}"
