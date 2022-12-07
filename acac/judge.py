@@ -86,8 +86,8 @@ def load_io_samples(i_dir: Path, o_dir: Path) -> list[IOSample]:
     return [
         IOSample(
             in_file=i_file,
-            in_text=i_file.read_text(encoding=UTF_8),
-            out_text=o_file.read_text(encoding=UTF_8),
+            in_text=i_file.read_text(encoding=UTF_8).rstrip(),
+            out_text=o_file.read_text(encoding=UTF_8).rstrip(),
         )
         for i_file, o_file in zip(sorted(i_dir.iterdir()), sorted(o_dir.iterdir()))
     ]
@@ -104,9 +104,9 @@ def get_results(execute_command: list[str], io_samples: list[IOSample]) -> list[
             name=io_sample.in_file.name,
             input=io_sample.in_text,
             expected=io_sample.out_text,
-            actual=cp.stdout,
+            actual=cp.stdout.rstrip(),
             error=cp.stderr,
-            is_accepted=io_sample.out_text == cp.stdout,
+            is_accepted=io_sample.out_text.strip() == cp.stdout.strip(),
             execution_ms=int((time.time() - start) * 1000),
         )
 
