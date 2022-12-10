@@ -123,7 +123,7 @@ post_execute = ["rm ${dir_path}/a.out"]
 
 
 [language.settings.python3]
-...
+# ...
 ```
 
 ### `${var}` の置換リスト
