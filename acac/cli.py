@@ -3,8 +3,7 @@ from __future__ import annotations
 import platform
 from pathlib import Path
 
-from acac import __version__, core
-from acac.config import load_config
+from acac import __version__, config, core
 from acac.util import console, includes
 
 HELP_MESSAGE = """\
@@ -12,6 +11,7 @@ HELP_MESSAGE = """\
 
 [bold]Usage:[/bold]
   acac <url> \\[options]
+  acac init                              Create configuration file "acac.toml".
 
 [bold]Options:[/bold]
   [blue]-c, --create[/blue]                           Create environment mode. (default)
@@ -49,6 +49,7 @@ def main(args: list[str]) -> None:
         return
 
     if args[0] == "init":
+        config.init()
         return
 
-    core.main(args, load_config())
+    core.main(args, config.load())

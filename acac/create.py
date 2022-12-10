@@ -41,11 +41,13 @@ def main(
         console.print("[bold]mkdir:", folder.dir_path)
 
     if not folder.source_file.exists():
-        template_file = config.language.settings[
-            lang_name
-        ].template_file_path.expanduser()
-        shutil.copy(template_file, folder.source_file)
-        console.print("[bold]Copied:", template_file, "->", folder.source_file)
+        template_file = config.language.settings[lang_name].template_file_path
+        if template_file and template_file.expanduser().exists():
+            shutil.copy(template_file.expanduser(), folder.source_file)
+            console.print("[bold]Copied:", template_file, "->", folder.source_file)
+        else:
+            folder.source_file.touch()
+            console.print("[bold]touch:", folder.source_file)
 
     if not folder.cache_html.exists():
         if manual:

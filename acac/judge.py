@@ -102,11 +102,11 @@ def get_results(execute_command: list[str], io_samples: list[IOSample]) -> list[
         )
         return Result(
             name=io_sample.in_file.name,
-            input=io_sample.in_text,
-            expected=io_sample.out_text,
-            actual=cp.stdout,
+            input=io_sample.in_text.rstrip(),
+            expected=io_sample.out_text.rstrip(),
+            actual=cp.stdout.rstrip(),
             error=cp.stderr,
-            is_accepted=io_sample.out_text == cp.stdout,
+            is_accepted=io_sample.out_text.strip() == cp.stdout.strip(),
             execution_ms=int((time.time() - start) * 1000),
         )
 

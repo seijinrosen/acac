@@ -1,30 +1,30 @@
 [create]
-post_create_commands = [
-    "git add ${dir_path}/in ${dir_path}/out ${dir_path}/metadata.toml",
-    "code . ${dir_path}/${source_file_name}",
-]
+post_create_commands = []
 clipboard_message = "Create: ${url}"
+
 
 [judge]
 copy_source_code_when_ac = true
-clipboard_message = "AC: ${url} ${lang}"
+clipboard_message = "AC: ${url} ${source_file_name}"
+
 
 [language]
 default = "python3"
 
+
 [language.settings.cpp]
 source_file_name = "main.cpp"
-template_file_path = "templates/main.cpp"
 [language.settings.cpp.commands]
 pre_execute = [
     "g++ --version",
     "g++ ${dir_path}/${source_file_name} -o ${dir_path}/a.out",
 ]
 execute = "${dir_path}/a.out"
+post_execute = []
+
 
 [language.settings.python3]
 source_file_name = "main.py"
-template_file_path = "templates/main.py"
 [language.settings.python3.commands]
 pre_execute = ["python3 --version"]
 execute = "python3 ${dir_path}/${source_file_name}"

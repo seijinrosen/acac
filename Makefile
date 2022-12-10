@@ -10,6 +10,11 @@ after-develop-merged:
 	git branch --delete develop
 	make switch
 
+clean:
+	rm -r .pytest_cache/
+	rm -r .venv/
+	rm .coverage
+
 init:
 	python3.7 -m venv .venv/
 	poetry install

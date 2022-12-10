@@ -31,6 +31,7 @@ def compose_get_samples(soup: BeautifulSoup) -> Callable[[IorO], list[str]]:
 
 def get_ac_url(url: str, lang: str) -> str:
     language_name = {
+        "bash": "Bash",
         "c": "C",
         "cpp": "C%2B%2B",
         "cs": "C%23",
@@ -56,6 +57,7 @@ def get_ac_url(url: str, lang: str) -> str:
         "rust": "Rust",
         "ts": "TypeScript",
         "typescript": "TypeScript",
+        "zsh": "Zsh",
     }.get(lang, "")
     return f"{BASE_URL}{get_contest_name(url)}/submissions?f.Task={get_task_name(url)}&f.LanguageName={language_name}&f.Status=AC&f.User="
 
