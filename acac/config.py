@@ -1,7 +1,7 @@
 import shutil
 import sys
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import tomli
 from pydantic import BaseModel
@@ -29,7 +29,7 @@ class LanguageSetting(BaseModel):
         post_execute: List[str] = []
 
     source_file_name: str
-    template_file_path: Path
+    template_file_path: Optional[Path]
     commands: Commands
 
 
