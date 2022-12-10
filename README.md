@@ -2,6 +2,16 @@
 
 競プロ便利 CLI ツール。[AtCoder](https://atcoder.jp/) と [アルゴ式](https://algo-method.com/) に対応。
 
+[![PyPI](https://img.shields.io/pypi/v/acac)](https://pypi.python.org/pypi/acac)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/acac)](https://pypi.python.org/pypi/acac)
+[![Tests](https://github.com/seijinrosen/acac/actions/workflows/tests.yml/badge.svg)](https://github.com/seijinrosen/acac/actions/workflows/tests.yml)
+[![CodeQL](https://github.com/seijinrosen/acac/actions/workflows/codeql.yml/badge.svg)](https://github.com/seijinrosen/acac/actions/workflows/codeql.yml)
+[![codecov](https://codecov.io/gh/seijinrosen/acac/branch/main/graph/badge.svg)](https://codecov.io/gh/seijinrosen/acac)
+[![Downloads](https://pepy.tech/badge/acac)](https://pepy.tech/project/acac)
+[![Downloads](https://pepy.tech/badge/acac/month)](https://pepy.tech/project/acac)
+[![Downloads](https://pepy.tech/badge/acac/week)](https://pepy.tech/project/acac)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 ＊現在 Pre-release のため、挙動やコマンドは変更される場合があります。
 
 ## 概要
