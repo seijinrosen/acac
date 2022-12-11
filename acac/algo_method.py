@@ -30,6 +30,7 @@ def extract_script_body(soup: BeautifulSoup) -> str:
 
 
 def get_ac_url(url: str, lang: str) -> str:
+    task_id = url.split("/")[-1]
     language = {
         "c": 5,
         "cpp": 1,
@@ -57,11 +58,5 @@ def get_ac_url(url: str, lang: str) -> str:
         "typescript": 11,
     }.get(lang)
     if language is None:
-        return f"{url}/submissions?id={get_task_id(url)}&status=AC&page=0"
-    return (
-        f"{url}/submissions?id={get_task_id(url)}&language={language}&status=AC&page=0"
-    )
-
-
-def get_task_id(url: str) -> str:
-    return url.split("/")[-1]
+        return f"{url}/submissions?id={task_id}&status=AC&page=0"
+    return f"{url}/submissions?id={task_id}&language={language}&status=AC&page=0"
