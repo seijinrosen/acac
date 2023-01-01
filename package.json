@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "cspell": "cspell '**'"
+  },
+  "devDependencies": {
+    "cspell": "^6.18.1"
+  }
+}

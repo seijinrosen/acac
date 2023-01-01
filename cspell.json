@@ -1,4 +1,5 @@
 {
+  "ignorePaths": ["pnpm-lock.yaml"],
   "words": [
     "acac",
     "atcoder",
@@ -9,6 +10,7 @@
     "codeql",
     "kyopro",
     "lxml",
+    "pnpm",
     "pydantic",
     "pypa",
     "pyperclip",
