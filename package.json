@@ -1,8 +1,10 @@
 {
   "scripts": {
-    "cspell": "cspell '**'"
+    "cspell": "cspell '**'",
+    "prepare": "husky install"
   },
   "devDependencies": {
-    "cspell": "^6.18.1"
+    "cspell": "^6.18.1",
+    "husky": "^8.0.0"
   }
 }

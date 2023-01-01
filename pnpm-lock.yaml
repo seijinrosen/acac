@@ -2,9 +2,11 @@ lockfileVersion: 5.4
 
 specifiers:
   cspell: ^6.18.1
+  husky: ^8.0.0
 
 devDependencies:
   cspell: 6.18.1
+  husky: 8.0.2
 
 packages:
 
@@ -678,6 +680,12 @@ packages:
   /has-own-prop/2.0.0:
     resolution: {integrity: sha512-Pq0h+hvsVm6dDEa8x82GnLSYHOzNDt7f0ddFa3FqcQlgzEiptPqL+XrOJNavjOzSYiYWIrgeVYYgGlLmnxwilQ==}
     engines: {node: '>=8'}
+    dev: true
+
+  /husky/8.0.2:
+    resolution: {integrity: sha512-Tkv80jtvbnkK3mYWxPZePGFpQ/tT3HNSs/sasF9P2YfkMezDl3ON37YN6jUUI4eTg5LcyVynlb6r4eyvOmspvg==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /import-fresh/3.3.0:
