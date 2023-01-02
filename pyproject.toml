@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "acac"
-version = "0.3.0"
+version = "0.4.0"
 description = "競プロ便利 CLI ツール。AtCoder と アルゴ式 に対応。"
 authors = ["seijinrosen <86702775+seijinrosen@users.noreply.github.com>"]
 license = "MIT"
