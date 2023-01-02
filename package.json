@@ -1,6 +1,8 @@
 {
   "scripts": {
     "cspell": "cspell '**'",
+    "prettier:check": "prettier --check .",
+    "prettier:write": "prettier --write .",
     "prepare": "husky install"
   },
   "devDependencies": {

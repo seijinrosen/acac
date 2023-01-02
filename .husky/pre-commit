@@ -11,4 +11,5 @@ fi
 poetry run bandit --recursive .
 poetry run black --check .
 pnpm run cspell
+pnpm run prettier:check
 make test
