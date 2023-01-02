@@ -9,4 +9,5 @@ if [ "$CURRENT_BRANCH" = "main" ]; then
 fi
 
 poetry run black --check .
+pnpm run cspell
 make test

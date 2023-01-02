@@ -1,16 +1,20 @@
 {
-  "ignorePaths": ["pnpm-lock.yaml"],
+  "ignorePaths": ["__pycache__", "pnpm-lock.yaml"],
   "words": [
     "acac",
     "atcoder",
     "Autobuild",
+    "beautifulsoup",
     "buildscript",
     "capsys",
     "codecov",
     "codeql",
+    "direnv",
+    "isort",
     "kyopro",
     "lxml",
     "pnpm",
+    "pycache",
     "pydantic",
     "pypa",
     "pyperclip",
@@ -19,6 +23,7 @@
     "readchar",
     "seijinrosen",
     "setuptools",
-    "tomli"
+    "tomli",
+    "venv"
   ]
 }
