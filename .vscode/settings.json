@@ -13,5 +13,7 @@
   },
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  // https://github.com/microsoft/vscode-python/issues/14150#issuecomment-701570338
+  "python.linting.banditArgs": ["-r", "--ini", "${workspaceFolder}/.bandit"]
 }
