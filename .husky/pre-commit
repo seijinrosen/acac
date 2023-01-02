@@ -1,2 +1,12 @@
 #!/usr/bin/env sh
+# shellcheck disable=SC1091
 . "$(dirname -- "$0")/_/husky.sh"
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$CURRENT_BRANCH" = "main" ]; then
+    echo "main ブランチへの直コミットは禁止されています"
+    exit 1
+fi
+
+poetry run black --check .
+make test
