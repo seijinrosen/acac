@@ -3,10 +3,12 @@ lockfileVersion: 5.4
 specifiers:
   cspell: ^6.18.1
   husky: ^8.0.0
+  prettier: 2.8.1
 
 devDependencies:
   cspell: 6.18.1
   husky: 8.0.2
+  prettier: 2.8.1
 
 packages:
 
@@ -877,6 +879,12 @@ packages:
   /picomatch/2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
+    dev: true
+
+  /prettier/2.8.1:
+    resolution: {integrity: sha512-lqGoSJBQNJidqCHE80vqZJHWHRFoNYsSpP9AjFhlhi9ODCJA541svILes/+/1GM3VaL/abZi7cpFzOpdR9UPKg==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
     dev: true
 
   /repeat-string/1.6.1:
