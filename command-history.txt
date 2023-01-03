@@ -2,3 +2,4 @@ pnpm add --save-dev cspell
 pnpm dlx husky-init && pnpm install
 pnpm add --save-dev --save-exact prettier
 poetry lock --no-update
+poetry update gitpython

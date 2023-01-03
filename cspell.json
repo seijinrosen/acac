@@ -10,6 +10,7 @@
     "codecov",
     "codeql",
     "direnv",
+    "gitpython",
     "isort",
     "kyopro",
     "lxml",
