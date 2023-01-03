@@ -23,7 +23,7 @@ tomli = "^2.0.1"
 tomli-w = "^1.0.0"
 typing-extensions = "^4.3.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 bandit = "^1.7.4"
 black = "^22.10.0"
 isort = "^5.11.4"
