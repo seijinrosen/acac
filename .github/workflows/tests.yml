@@ -35,7 +35,7 @@ jobs:
 
       - run: poetry run pytest --cov=acac --cov-report=term-missing --cov-report=xml
 
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         with:
           files: ./coverage.xml
           fail_ci_if_error: false
