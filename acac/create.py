@@ -3,7 +3,7 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-from pydantic import BaseModel
+from pydantic.v1 import BaseModel
 
 from acac import algo_method, atcoder
 from acac.config import Config

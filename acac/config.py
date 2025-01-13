@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import tomli
-from pydantic import BaseModel
+from pydantic.v1 import BaseModel
 
 from acac.util import UTF_8, confirm_yN, console
 

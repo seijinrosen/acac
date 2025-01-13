@@ -6,7 +6,7 @@ import webbrowser
 from pathlib import Path
 
 import pyperclip
-from pydantic import BaseModel
+from pydantic.v1 import BaseModel
 from rich.markup import escape
 from rich.table import Table
 
@@ -70,7 +70,9 @@ def main(
             pyperclip.copy(source_code)  # type: ignore
             console.print("[bold]Copied source code to clipboard:", folder.source_file)
 
-        if problem_type in {"algo_method", "atcoder"} and confirm_yN("他の人の提出を確認しますか？"):
+        if problem_type in {"algo_method", "atcoder"} and confirm_yN(
+            "他の人の提出を確認しますか？"
+        ):
             ac_url = get_ac_url(problem_type, url, lang_name)
             webbrowser.open(ac_url)
             console.print("[bold]Opened:", ac_url)

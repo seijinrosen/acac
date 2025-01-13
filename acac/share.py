@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from pydantic import BaseModel
+from pydantic.v1 import BaseModel
 from typing_extensions import Literal
 
 from acac.util import replaced

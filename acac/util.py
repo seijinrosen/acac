@@ -9,7 +9,7 @@ import pyperclip
 import requests
 import tomli_w
 from bs4 import BeautifulSoup, ResultSet, Tag
-from pydantic import BaseModel
+from pydantic.v1 import BaseModel
 from readchar import key, readchar
 from rich.console import Console
 from rich.markup import escape
