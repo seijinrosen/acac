@@ -8,7 +8,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "yearly"
 
   # The npm dependencies are updated yearly instead of monthly to reduce noise from frequent updates.
   - package-ecosystem: "npm"
